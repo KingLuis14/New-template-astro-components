@@ -1,0 +1,45 @@
+@use "../settings/" as *;
+:root {
+  // colores
+
+  --color-white-000: #ffffff;
+  --color-white-100: #f3f3f3;
+  --color-white-300: #cbcbcb;
+
+  --color-black-000: #000000;
+  --color-black-100: #1a1a1a;
+
+  --color-yellow-300: #ffdc30;
+  --color-yellow-500: #eab108;
+
+  --color-blue-50: #eef3ff;
+  --color-blue-100: #d9e4ff;
+  --color-blue-200: #bcd1ff;
+  --color-blue-300: #8eb4ff;
+  --color-blue-400: #598aff;
+  --color-blue-500: #3764ff;
+  --color-blue-600: #1b3df5;
+  --color-blue-700: #142ae1;
+  --color-blue-800: #1723b6;
+  --color-blue-900: #19258f;
+  --color-blue-950: #141957;
+  --color-blue-1000: #010427;
+
+  --color-cyan-100: #42dfce;
+
+  // fuentes
+
+  --fs-superTitle: clamp(2.7994rem, 2.4165rem + 1.9141vw, 3.7325rem);
+  --fs-superTitleSub: clamp(1.944rem, 1.6782rem + 1.3292vw, 2.592rem);
+  --fs-title1: clamp(1.62rem, 1.3985rem + 1.1077vw, 2.16rem);
+  --fs-title2: clamp(1.35rem, 1.1654rem + 0.9231vw, 1.8rem);
+  --fs-title3: clamp(1.125rem, 0.9712rem + 0.7692vw, 1.5rem);
+  --fs-normal: clamp(0.9375rem, 0.8093rem + 0.641vw, 1.25rem);
+  --fs-small: clamp(0.7813rem, 0.6744rem + 0.5342vw, 1.0417rem);
+  --fs-smallx: clamp(0.651rem, 0.562rem + 0.4452vw, 0.8681rem);
+
+  // wrapper
+  --wrapper-width: min(90%, 1000px);
+  --wrapper-margin: calc((100% - var(--wrapper-width)) / 2);
+  --padding-section: clamp(3.5rem, 5vw + 2.25rem, 6rem);
+}

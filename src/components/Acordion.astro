@@ -1,0 +1,69 @@
+---
+import { Icon } from "astro-icon/components";
+---
+
+<div class="dropdown bg-color-white-000">
+  <button class="dropdown__button"
+    >Acordeon button<span><Icon name={"ArrowIcon"} size={20} /></span>
+  </button>
+  <div class="dropdown__content">
+    <div>
+      <div>
+        <p>
+          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Id harum
+          velit accusamus incidunt architecto blanditiis eos nulla ad asperiores
+          nostrum illum ea esse, neque iusto voluptas soluta nam? Consequatur,
+          obcaecati?
+        </p>
+        <p>
+          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Id harum
+          velit accusamus incidunt architecto blanditiis eos nulla ad asperiores
+          nostrum illum ea esse, neque iusto voluptas soluta nam? Consequatur,
+          obcaecati?
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style lang="scss">
+  .dropdown {
+    &__button {
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+      align-items: center;
+
+      > span {
+        pointer-events: none;
+        transform: rotate(-180deg);
+        transition: transform 0.4s;
+
+        &.rotate {
+          transform: rotate(0);
+        }
+      }
+    }
+
+    &__content {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.4s ease-out;
+
+      > div {
+        overflow: hidden;
+      }
+
+      &.isOpen {
+        grid-template-rows: 1fr;
+      }
+    }
+  }
+</style>
+
+<script>
+  import { toogleAcordeon } from "@/scripts/Acordion.ts";
+  import { addCustomEventListener } from "@/utils/CustomEventListener";
+
+  addCustomEventListener("click", ".dropdown__button", toogleAcordeon);
+</script>

@@ -1,0 +1,48 @@
+
+.text-center{
+    text-align: center;
+}
+
+.text-rigth{
+    text-align: right;
+}
+
+.text-left{
+    text-align: left;
+}
+
+.icon-circle{
+    display: grid;
+    place-items: center;
+    width: var(--width-circle-icon, 3em);
+    aspect-ratio: 1;
+    background-color: var(--color-circle-icon, #646464);
+    border-radius: 50%;
+}
+
+.textFlow > *:not(:first-child){
+    margin-block-start: var(--_space, 1em);
+}
+
+.title-section{
+    font-size: var(--fs-title1);
+    padding-block-end: var(--padding-section);
+    line-height: normal;
+}
+
+
+.fw-400{
+    font-weight: 400;
+}
+.fw-500{
+    font-weight: 500;
+}
+.fw-600{
+    font-weight: 600;
+}
+.fw-700{
+    font-weight: 700;
+}
+.fw-800{
+    font-weight: 800;
+}

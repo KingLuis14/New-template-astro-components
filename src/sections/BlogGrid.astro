@@ -1,0 +1,107 @@
+---
+import Button from "@/components/Button.astro";
+import CardBlog from "@/components/CardBlog/CardBlog.astro";
+import SectionPage from "@/components/SectionPage.astro";
+import Typographic from "@/components/Typographic.astro";
+import Wrapper from "@/components/Wrapper/Wrapper.astro";
+---
+<SectionPage>
+  <Wrapper>
+    <Typographic as="h2" size="sectionTitle" theme="theme2">Blog</Typographic>
+    <div class="cardBlock-container">
+      <CardBlog
+        image="https://www.masterseosem.com/images/etiquetas-html.webp"
+        date="15 mayo"
+        autor="Enrique Calero"
+        title="11 trucos HTML útiles para un mejor desarrollo web moderno"
+      />
+      <CardBlog
+        image="https://miro.medium.com/v2/resize:fit:600/1*OFsc0SD55jhi8cjo7aCA4w.jpeg"
+        date="15 mayo"
+        autor="Enrique Calero"
+        title="Css. Tal vez te preguntes que es css, pues ..."
+      />
+      <CardBlog
+        image="https://pbs.twimg.com/media/Fa20yS5WAAAi0QS.jpg"
+        date="15 mayo"
+        autor="Enrique Calero"
+        title="11 trucos HTML útiles para un mejor desarrollo web moderno"
+      />
+      <CardBlog
+        image="https://media.licdn.com/dms/image/C5612AQFmIPUWegD3MA/article-cover_image-shrink_600_2000/0/1604154336452?e=2147483647&v=beta&t=pm_Dxo31JuK4FhKH4UcblsdmaL-BJSwNPsfevsqe2-Q"
+        date="15 mayo"
+        autor="Enrique Calero"
+        title="Css. Tal vez te preguntes que es css, pues ..."
+      />
+      <CardBlog
+        image="https://stride.com.co/wp-content/uploads/2023/01/gabriel-heinzer-g5jpH62pwes-unsplash-scaled.jpg"
+        date="15 mayo"
+        autor="Enrique Calero"
+        title="11 trucos HTML útiles para un mejor desarrollo web moderno"
+      />
+      <CardBlog
+        image="https://miro.medium.com/v2/resize:fit:600/1*OFsc0SD55jhi8cjo7aCA4w.jpeg"
+        date="15 mayo"
+        autor="Enrique Calero"
+        title="Css. Tal vez te preguntes que es css, pues ..."
+      />
+      <CardBlog
+        image="https://miro.medium.com/v2/resize:fit:600/1*OFsc0SD55jhi8cjo7aCA4w.jpeg"
+        date="15 mayo"
+        autor="Enrique Calero"
+        title="Css. Tal vez te preguntes que es css, pues ..."
+      />
+      <CardBlog
+        image="https://www.masterseosem.com/images/etiquetas-html.webp"
+        date="15 mayo"
+        autor="Enrique Calero"
+        title="11 trucos HTML útiles para un mejor desarrollo web moderno"
+      />
+      <CardBlog
+        image="https://blog.interfell.com/hubfs/JavaScript%20un%20lenguaje%20de%20programaci%C3%B3n.jpg"
+        date="15 mayo"
+        autor="Enrique Calero"
+        title="Css. Tal vez te preguntes que es css, pues ..."
+      />
+    </div>
+    <footer class="blog-footer">
+      <Button as="button" theme="disable">Anterior</Button>
+      <Button as="button">Posterior</Button>
+    </footer>
+  </Wrapper>
+
+</SectionPage>
+
+
+
+<style lang="scss" is:global>
+
+  @use "@/scss/settings/" as *;
+
+  .cardBlock-container {
+    display: grid;
+    gap: 0.5rem;
+    grid-template-columns: 1fr;
+
+    @include media-query(md, "min") {
+      grid-template-columns: 1fr 1fr;
+
+      > *:first-child {
+        grid-column: span 2;
+        grid-row: span 2;
+      }
+    }
+    @include media-query(lg, "min") {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+  }
+
+  .blog-footer{
+    display: flex;
+    justify-content: space-between;
+    margin-top: calc( var(--padding-section) / 2)
+  }
+
+
+
+</style>

@@ -1,0 +1,56 @@
+---
+import Typographic from "../Typographic.astro";
+import type { Props } from "./Interface.ts";
+
+const { image, title, autor, date } = Astro.props;
+---
+
+<article >
+  <a href="#" class="cardBlog">
+    <img class="cardBlog__img" src={image} alt={title} />
+    <div class="cardBlog__content textFlow">
+      <Typographic as="h3" size="normal" theme="theme2">{title}</Typographic>
+      <Typographic as="p" size="small" theme="theme3" weigth="400">
+        <strong class="fw-500">{autor} <time>{date}</time> </strong>
+      </Typographic>
+    </div>
+  </a>
+</article>
+
+
+<style lang="scss" >
+  @use '@/scss/settings/' as *;
+
+.cardBlog {
+  display: grid;
+  border-radius: .7rem;
+  overflow: hidden;
+
+  > * {
+    grid-column: 1/ -1;
+    grid-row: 1 / -1;
+  }
+
+  &__img {
+    aspect-ratio: 3/2.2;
+    height: 100%;
+    transition: transform .5s;
+
+    &:hover{
+      transform: scale(1.3);
+    }
+  }
+
+  &__content {
+    align-self: self-end;
+    background-color: rgba(0, 0, 0, 0.55);
+    color: white;
+    padding: 1rem;
+    line-height: normal;
+    z-index: 10;
+    pointer-events: none;
+  }
+}
+
+
+</style>

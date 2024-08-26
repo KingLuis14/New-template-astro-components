@@ -1,0 +1,73 @@
+---
+import type { HTMLTag, Polymorphic } from "astro/types";
+import { cva, type VariantProps } from "class-variance-authority";
+const button = cva("button", {
+  variants: {
+    theme: {
+      normal: "button--normal",
+      theme2: "button--theme2",
+      theme3: "button--theme3",
+      disable: "button--disable",
+    },
+    size: {
+      content: "button--content",
+    },
+  },
+});
+
+type Props<Tag extends HTMLTag> = Polymorphic<{ as: Tag; classes?: string }> &
+  VariantProps<typeof button>;
+
+const { as: Tag, theme = "normal", size, classes, ...attrs } = Astro.props;
+---
+
+<Tag class={button({ theme, size, class: classes })} {...attrs}>
+  <slot />
+</Tag>
+
+<style lang="scss">
+  .button {
+    background-color: var(--button-bg-color, #fff);
+    padding: 0.5em 1.5em;
+    border-radius: 0.25em;
+    color: var(--button-text-color, #000);
+    font-weight: 500;
+
+    &--content {
+      width: fit-content;
+    }
+
+    &:is(:hover, :focus) {
+      background-color: var(--button-bg-color-hover, #000);
+      color: var(--button-text-color-hover, #fff);
+    }
+
+    &--normal {
+      --button-text-color: var(--color-white-000);
+      --button-bg-color: var(--color-blue-500);
+      --button-text-color-hover: var(--color-white-000);
+      --button-bg-color-hover: var(--color-blue-700);
+    }
+
+    &--theme2 {
+      --button-text-color: var(--color-blue-500);
+      --button-bg-color: var(--color-white-000);
+      --button-bg-color-hover: var(--color-white-100);
+      --button-text-color-hover: var(--color-black-100);
+    }
+
+    &--disable {
+      --button-text-color: var(--color-blue-500);
+      --button-bg-color: var(--color-blue-950);
+      --button-text-color-hover: var(--color-blue-500);
+      --button-bg-color-hover: var(--color-blue-950);
+    }
+
+    &--disable[data-theme="ligth"] {
+      --button-text-color: var(--color-blue-500);
+      --button-bg-color: var(--color-blue-300);
+      --button-text-color-hover: var(--color-blue-500);
+      --button-bg-color-hover: var(--color-blue-300);
+    }
+  }
+</style>

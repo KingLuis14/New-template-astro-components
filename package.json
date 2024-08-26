@@ -3,15 +3,24 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "dev": "astro dev",
+    "dev": "astro dev --host",
     "start": "astro dev",
     "build": "astro check && astro build",
-    "preview": "astro preview",
+    "preview": "astro preview --host",
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^4.14.4",
-    "@astrojs/check": "^0.9.3",
-    "typescript": "^5.5.4"
+    "@astrojs/check": "^0.7.0",
+    "astro": "^4.10.1",
+    "astro-purgecss": "^4.1.1",
+    "class-variance-authority": "^0.7.0",
+    "purgecss": "^6.0.0",
+    "typescript": "^5.4.5"
+  },
+  "devDependencies": {
+    "astro-icon": "^1.1.0",
+    "autoprefixer": "^10.4.19",
+    "postcss-preset-env": "^9.5.14",
+    "sass": "^1.77.2"
   }
 }

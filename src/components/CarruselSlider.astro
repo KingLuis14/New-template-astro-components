@@ -1,0 +1,47 @@
+<ul class="carruselSlider">
+    
+    <li class="carruselSlider__item">
+        <img class="carruselSlider__img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTxMz8eyezDZO8dPiJ0sGU4dhj_f1nu6bOFlg&s" alt="">
+    </li>
+    <li class="carruselSlider__item">
+        <img class="carruselSlider__img" src="https://media.istockphoto.com/id/479900992/es/foto/lama-y-machu-picchu.jpg?s=612x612&w=0&k=20&c=7sEjBlpdtaAdvD5fBz4GtZTbp8i96znl0yRnl6B_vfA=" alt="">
+    </li>
+    <li class="carruselSlider__item">
+        <img class="carruselSlider__img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ25xkxCtyqsB98WsCbZsTSoVTKe9wU195q1A&s" alt="">
+    </li>
+</ul>
+
+<style lang="scss">
+
+@use '@/scss/settings/' as *;
+
+.carruselSlider{
+
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 80%; // o auto
+    grid-auto-rows: 100%;
+    height: 60vmin;
+    gap: 1rem;
+    scroll-behavior: smooth;
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+    padding-inline: var(--wrapper-margin);
+    scrollbar-width: 0;
+
+    // &::-webkit-scrollbar {
+    //         width: 0;
+    //     }
+
+    &__item{
+        scroll-snap-align: center;
+        scroll-snap-stop: always;
+    }
+
+    &__img{
+        height: 100%;
+        // width: auto;
+    }
+}
+
+</style>

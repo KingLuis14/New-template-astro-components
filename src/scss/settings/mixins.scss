@@ -1,0 +1,30 @@
+@use './breakpoint.scss' as *;
+
+@mixin media-query( $breakpoint, $condition: 'min') {
+
+  @if not ($condition == 'min' or $condition == 'max') {
+    @error "El valor de `#{$condition}` debe ser 'min' o 'max'.";
+  }
+
+  @if $condition == 'min' {
+    @if map-has-key($breakpoints, $breakpoint) {
+      @media screen and (width >= map-get($breakpoints, $breakpoint)) {
+        @content;
+      }
+    } @else {
+      @media screen and (width >= $breakpoint) {
+        @content;
+      }
+    }
+  } @else if $condition == 'max' {
+    @if map-has-key($breakpoints, $breakpoint) {
+      @media screen and (width <= map-get($breakpoints, $breakpoint)) {
+        @content;
+      }
+    } @else {
+      @media screen and (width <= $breakpoint) {
+        @content;
+      }
+    }
+  }
+}

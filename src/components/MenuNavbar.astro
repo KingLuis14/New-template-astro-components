@@ -1,0 +1,105 @@
+<header class="headerMain">
+  <nav class="menu">
+    <ul class="menu__list">
+      <li class="menu__item">
+        <a class="menu__link" href="#">Documentacion</a>
+      </li>
+      <li class="menu__item" data-show-submenu>
+        <span>
+          <a class="menu__trigger" href="#">Sedes</a>
+          <small class="menu__arrow">X</small>
+        </span>
+        <div>
+          <div>
+            <ul class="menu__list submenu">
+              <li class="menu__item">
+                <a class="menu__link" href="#" data-submenu>Lima</a>
+              </li>
+              <li class="menu__item">
+                <a class="menu__link" href="#" data-submenu>Puno</a>
+              </li>
+              <li class="menu__item">
+                <span>
+                  <a class="menu__trigger" href="#">Lima Metropolitana</a>
+                  <small class="menu__arrow">X</small>
+                </span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </li>
+      <li class="menu__item">
+        <a class="menu__link" href="#">Contacto</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<style lang="scss">
+  .headerMain {
+    background-color: black;
+    padding: 1rem;
+  }
+  .menu {
+    &__list {
+      display: flex;
+      gap: 1rem;
+    }
+
+    &__item {
+    }
+
+    &__item[data-show-submenu] {
+      position: relative;
+
+      &:hover {
+        --submenu-opacity: 1;
+        --menu-trigger-bg-color: gray;
+        --submenu-translate: 0;
+        --submenu-pointer-evens: auto;
+      }
+    }
+
+    &__link,
+    &__trigger {
+      color: white;
+      padding: 0.5em 1.5em;
+
+      &:hover {
+        background-color: var(--menu-trigger-bg-color, gray);
+      }
+    }
+
+    &__arrow {
+      color: white;
+    }
+
+    &__link[data-submenu] {
+      display: block;
+    }
+
+    &__trigger {
+      background-color: var(--menu-trigger-bg-color);
+    }
+  }
+
+  .submenu {
+    position: absolute;
+    background-color: rgb(22, 176, 17);
+    flex-direction: column;
+    min-width: 15rem;
+    top: 110%;
+    padding: 0.5rem;
+    gap: 0.5rem;
+    transition:
+      transform 0.4s,
+      opacity 0.4s;
+    transform: translateY(var(--submenu-translate, 1rem));
+    opacity: var(--submenu-opacity, 0);
+    pointer-events: var(--submenu-pointer-evens, none);
+
+    > .menu__link {
+      display: block;
+    }
+  }
+</style>

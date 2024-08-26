@@ -1,0 +1,44 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { cva, type VariantProps } from "class-variance-authority";
+
+const sectionPage = cva("section-page padding-section", {
+  variants: {
+    theme: {
+      theme1: "bg-color-blue-100",
+      theme2: "bg-color-blue-500",
+      footer: "bg-color-blue-900",
+      background2: "background-2",
+    },
+  },
+});
+
+interface Props
+  extends VariantProps<typeof sectionPage>,
+    HTMLAttributes<"div"> {
+  classes?: string;
+}
+
+const { theme, classes, ...attrs } = Astro.props;
+---
+
+<section class={sectionPage({ theme, class: classes })} {...attrs}>
+  <slot />
+</section>
+
+<style lang="scss">
+   
+
+.section-page{
+    --_background : var(--background, transparent) ;
+    background-color: var(--_background);
+    padding-block: var(--padding-section);
+
+    &--theme1{
+        --background: var(--colors-success);
+    }
+    &--theme2{
+        --background : var(--colors-primary);
+    }
+}
+</style>

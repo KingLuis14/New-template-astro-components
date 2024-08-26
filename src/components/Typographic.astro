@@ -1,0 +1,56 @@
+---
+import type { HTMLTag, Polymorphic } from "astro/types";
+import { cva, type VariantProps } from "class-variance-authority";
+
+const typogtafic = cva("", {
+  variants: {
+    theme: {
+      theme1: "color-black-000",
+      theme2: "color-white-000",
+      theme3: "color-white-300",
+    },
+    size: {
+      superTitle: "fs-superTitle",
+      superTitleSub: "fs-superTitleSub",
+      sectionTitle: "title-section",
+      title1: "fs-title1",
+      title2: "fs-title2",
+      title3: "fs-title3",
+      normal: "fs-normal",
+      small: "fs-small",
+    },
+    align: {
+      left: "text-start",
+      center: "text-center",
+      end: "text-end",
+    },
+    weigth: {
+      "400": "fw-400",
+      "500": "fw-500",
+      "600": "fw-600",
+      "700": "fw-700",
+      "800": "fw-800",
+    },
+  },
+});
+
+type Props<Tag extends HTMLTag> = Polymorphic<{ as: Tag; classes?: string }> &
+  VariantProps<typeof typogtafic>;
+
+const {
+  as: Tag,
+  theme = "theme1",
+  size,
+  classes,
+  align,
+  weigth,
+  ...attrs
+} = Astro.props;
+---
+
+<Tag
+  class={typogtafic({ theme, size, align, weigth, class: classes })}
+  {...attrs}
+>
+  <slot />
+</Tag>

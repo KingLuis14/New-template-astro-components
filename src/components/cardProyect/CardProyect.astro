@@ -1,0 +1,97 @@
+---
+import { Icon } from "astro-icon/components";
+
+export interface Proyect {
+  title: string;
+  description: string;
+  color: string;
+  image: string;
+  tags: string[];
+}
+
+interface Props {
+  data: Proyect;
+}
+
+const { data } = Astro.props;
+const { title, description, image, color, tags } = data;
+---
+
+<a href="#" class="cardProyect" style=`--color:${color}`>
+  <img class="cardProyect__img" src={image} alt={title} />
+  <div class="cardProyect__content textFlow">
+    <h3>{title}</h3>
+    <p class="color-white-300">{description}</p>
+    <footer class="cardProyect__footer">
+      {
+        tags &&
+          tags.map((tag) => (
+            <span class="icon-circle cardProyect__span">
+              <Icon name={tag} size={15} color="black" />
+            </span>
+          ))
+      }
+    </footer>
+  </div>
+</a>
+
+<style lang="scss">
+  @use "@/scss/settings/" as *;
+
+  .cardProyect {
+    --_scale: var(--scale, 1);
+    --_opacity: var(--opacity, 1);
+    --_moveX: var(--moveX, 0);
+
+    display: grid;
+    background-color: var(--color, black);
+    padding: 1rem;
+    overflow: hidden;
+    border-radius: 0.5rem;
+
+    &:hover {
+      --scale: 1.7;
+      --opacity: 0;
+      --moveX: -1rem;
+    }
+
+    > * {
+      grid-column: 1 / -1;
+      grid-row: 1 / -1;
+    }
+
+    &__img {
+      width: 70%;
+      aspect-ratio: 1;
+      justify-self: end;
+      transform-origin: top right;
+      transition: transform 0.4s;
+      transform: scale(var(--_scale));
+    }
+
+    &__content {
+      // background-color: rgba(220, 20, 60, 0.492);
+      justify-self: start;
+      align-self: center;
+      width: 60%;
+      color: white;
+      pointer-events: none;
+      transition:
+        opacity 0.4s,
+        transform 0.4s;
+      z-index: 1;
+      opacity: var(--_opacity);
+      transform: translateX(var(--_moveX));
+    }
+
+    &__footer {
+      display: flex;
+      gap: 1rem;
+    }
+
+    &__span {
+      --width-circle-icon: 30px;
+      --color-circle-icon: rgb(255, 255, 255);
+    }
+  }
+</style>

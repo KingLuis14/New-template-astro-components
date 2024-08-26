@@ -1,0 +1,33 @@
+---
+import type { HTMLTag, Polymorphic } from "astro/types";
+import { cva, type VariantProps } from "class-variance-authority";
+const button = cva("button", {
+  variants: {
+    theme: {
+      theme1: "button--theme1",
+      theme2: "button--theme2",
+      theme3: "button--theme3",
+    },
+    size: {
+      content: "button--content",
+    },
+  },
+});
+
+
+
+type Props<Tag extends HTMLTag> = Polymorphic<{ as: Tag; classes?: string }> &
+  VariantProps<typeof button>;
+
+const {
+  as: Tag,
+  theme = "theme1",
+  size,
+  classes,
+  ...attrs
+} = Astro.props ;
+---
+
+<Tag class={button({ theme, size, class: classes })} {...attrs}>
+  <slot />
+</Tag>

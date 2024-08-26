@@ -1,0 +1,33 @@
+---
+import Button from "@/components/Button.astro";
+import SectionPage from "@/components/SectionPage.astro";
+import Typographic from "@/components/Typographic.astro";
+import Wrapper from "@/components/Wrapper/Wrapper.astro";
+
+
+---
+
+<SectionPage>
+    <Wrapper >
+      <Typographic
+        as="h2"
+        size="sectionTitle"
+        theme="theme2"
+        >Botones</Typographic
+      >
+      <div class="textFlow" style="--_space: 2rem;">
+        <div style="padding: 1rem;">
+          <Button as="a" href="#">Default dark</Button>
+          <Button as="button"> Posterior dark</Button>
+          <Button as="a" href="#" theme="disable"> disable dark</Button>
+        </div>
+  
+        <div style="padding: 1rem;" class="bg-color-white-000" >
+          <Button as="a" href="#">Default ligth</Button>
+          <Button as="button"> Posterior ligth</Button>
+          <Button as="a" href="#" theme="disable" data-theme="ligth"> disable ligth</Button>
+        </div>
+      </div>
+
+    </Wrapper>
+  </SectionPage>
