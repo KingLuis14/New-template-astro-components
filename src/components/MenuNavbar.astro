@@ -5,10 +5,11 @@
         <a class="menu__link" href="#">Documentacion</a>
       </li>
       <li class="menu__item" data-show-submenu>
-        <span>
-          <a class="menu__trigger" href="#">Sedes</a>
-          <small class="menu__arrow">X</small>
+        <span class="menu__trigger">
+          <a href="#">Sedes</a>
+          <small class="menu__arrow">↓</small>
         </span>
+
         <div>
           <div>
             <ul class="menu__list submenu">
@@ -18,11 +19,27 @@
               <li class="menu__item">
                 <a class="menu__link" href="#" data-submenu>Puno</a>
               </li>
-              <li class="menu__item">
-                <span>
-                  <a class="menu__trigger" href="#">Lima Metropolitana</a>
-                  <small class="menu__arrow">X</small>
+              <li class="menu__item" data-show-submenu>
+                <span class="menu__trigger">
+                  <a href="#">Lima Metropolitana</a>
+                  <small class="menu__arrow">→</small>
                 </span>
+
+                <div>
+                  <div>
+                    <ul class="menu__list submenu submenu--nivel-2">
+                      <li class="menu__item">
+                        <a class="menu__link" href="#" data-submenu>Comas</a>
+                      </li>
+
+                      <li class="menu__item">
+                        <a class="menu__link" href="#" data-submenu
+                          >Independencia</a
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                </div>
               </li>
             </ul>
           </div>
@@ -52,21 +69,42 @@
     &__item[data-show-submenu] {
       position: relative;
 
-      &:hover {
-        --submenu-opacity: 1;
-        --menu-trigger-bg-color: gray;
-        --submenu-translate: 0;
-        --submenu-pointer-evens: auto;
+      &:hover .submenu {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+      }
+
+      &:hover & .submenu {
+        opacity: 0;
+      }
+
+      & &:hover .submenu {
+        opacity: 1;
+      }
+
+      // triiger
+
+      &:hover .menu__trigger {
+        background-color: crimson;
+      }
+
+      &:hover & .menu__trigger {
+        background-color: transparent;
+      }
+
+      & &:hover .menu__trigger {
+        background-color: crimson;
       }
     }
 
-    &__link,
-    &__trigger {
+    &__link {
       color: white;
       padding: 0.5em 1.5em;
+      border-radius: 0.25rem;
 
       &:hover {
-        background-color: var(--menu-trigger-bg-color, gray);
+        background-color: rgb(97, 97, 97);
       }
     }
 
@@ -79,27 +117,32 @@
     }
 
     &__trigger {
-      background-color: var(--menu-trigger-bg-color);
+      display: flex;
+      padding: 0.5em 1.5em;
+      gap: 1rem;
+      color: white;
+      border-radius: 0.25rem;
     }
   }
 
   .submenu {
     position: absolute;
-    background-color: rgb(22, 176, 17);
+    background-color: rgb(62, 62, 62);
     flex-direction: column;
     min-width: 15rem;
-    top: 110%;
+    top: 100%;
     padding: 0.5rem;
     gap: 0.5rem;
     transition:
       transform 0.4s,
       opacity 0.4s;
-    transform: translateY(var(--submenu-translate, 1rem));
-    opacity: var(--submenu-opacity, 0);
-    pointer-events: var(--submenu-pointer-evens, none);
+    transform: translateY(1rem);
+    opacity: 0;
+    pointer-events: none;
 
-    > .menu__link {
-      display: block;
+    &--nivel-2 {
+      top: 0;
+      left: 100%;
     }
   }
 </style>
