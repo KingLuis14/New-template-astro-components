@@ -10,6 +10,9 @@ const images = [
   "https://hips.hearstapps.com/hmg-prod/images/grumpy-cat-gatos-internet-meme-1582125875.jpg",
   "https://yt3.googleusercontent.com/bULnA4xs69WDJt5mdQCzeLnSjclI1CviNIxj5HLpN1V6d72GP9BYXy_GKxmyZBD-lW9FvUU=s900-c-k-c0x00ffffff-no-rj",
 ];
+
+// images.push(images[0]);
+// images.unshift(images[images.length - 2]);
 ---
 
 <SectionPage>
@@ -34,7 +37,10 @@ const images = [
       <nav class="slider__nav">
         {
           images.map((img, index) => (
-            <button class:list={[`slider__dot`, { active: index === 0 }]} />
+            <button
+              data-slide={index}
+              class:list={[`slider__dot`, { active: index === 0 }]}
+            />
           ))
         }
       </nav>
@@ -42,29 +48,39 @@ const images = [
         <Icon name="ArrowIcon" size={25} />
       </button>
     </div>
+
+    <h1 id="datos" style="color: white"></h1>
   </Wrapper>
 </SectionPage>
 
 <style lang="scss">
   .slider {
     position: relative;
-    overflow-x: hidden;
+    // overflow-x: hidden;
     &__list {
       display: flex;
       height: 50svh;
 
-      --Move: 0;
+      --Move: auto;
       --transition: none;
 
       transition: var(--transition) 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      transform: translateX(var(--Move));
-      cursor: grab;
-      // overflow-x: scroll;
+      overflow-x: scroll;
+      scroll-behavior: var(--Move);
+      scroll-snap-type: x mandatory;
+
+      scrollbar-width: 0;
+
+      &::-webkit-scrollbar {
+        height: 0px;
+      }
     }
 
     &__item {
       width: 100%;
       flex-shrink: 0;
+      scroll-snap-stop: always;
+      scroll-snap-align: start;
 
       &.active img {
         filter: invert(70%);
@@ -142,6 +158,240 @@ const images = [
 </style>
 
 <script>
+  import {
+    addCustomEventListener,
+    obtenerHermanos,
+  } from "@/utils/CustomEventListener";
+
+  type Direction = "LEFT" | "RIGTH";
+  const $Slider = document.querySelector(".slider") as HTMLElement;
+  const $SLiderList = document.querySelector(".slider__list") as HTMLElement;
+  const $ArrayItem = Array.from($SLiderList.children) as HTMLElement[];
+  const $Datos = document.querySelector("#datos") as HTMLElement;
+  const $sliderNavDot = $Slider.querySelector(".slider__nav") as HTMLElement;
+  const $arrayDots = $sliderNavDot
+    ? (Array.from($sliderNavDot.children) as HTMLElement[])
+    : [];
+
+  const itemObserver = new IntersectionObserver(
+    (entries, observer) => {
+      entries.forEach((entri) => {
+        if (entri.isIntersecting) {
+          $SLiderList.style.setProperty("--Move", "auto");
+          const $TargetElement = entri.target as HTMLElement;
+          const atributeDataSlide = $TargetElement.getAttribute("data-slide");
+
+          entri.target.classList.add("active");
+          setActiveDot(atributeDataSlide);
+
+          if ($TargetElement.hasAttribute("data-clone")) {
+            const $ArrayItem = Array.from(
+              $SLiderList.children
+            ) as HTMLElement[];
+
+            const atributeDataSlide = $TargetElement.getAttribute("data-slide");
+
+            const $original = $ArrayItem.find(
+              (item) =>
+                item.getAttribute("data-slide") === atributeDataSlide &&
+                !item.hasAttribute("data-clone")
+            );
+
+            if ($original) {
+              const originalIndex = $ArrayItem.indexOf($original);
+
+              const elementsBeforeOriginal = $ArrayItem.slice(
+                0,
+                originalIndex + 1
+              );
+
+              // console.log(elementsBeforeOriginal);
+
+              const totalWidth = elementsBeforeOriginal.reduce(
+                (sum, element, index) => {
+                  return index < elementsBeforeOriginal.length - 1
+                    ? sum + element.offsetWidth
+                    : sum;
+                },
+                0
+              );
+
+              $SLiderList.scrollLeft = totalWidth;
+
+              // $Datos.innerHTML = `<h1>Es un clone, mover el scroll a ${totalWidth}</h1>`;
+            }
+          }
+        } else {
+          entri.target.classList.remove("active");
+        }
+
+        observer.unobserve(entri.target);
+      });
+    },
+    {
+      root: document.querySelector(".slider__list"),
+      threshold: 0.8,
+    }
+  );
+
+  const observeSlides = () => {
+    const $ArrayItem = Array.from($SLiderList.children) as HTMLElement[];
+    $ArrayItem.forEach((item) => itemObserver.observe(item));
+  };
+
+  const clonarItem = () => {
+    const firstClone = $ArrayItem[0].cloneNode(true) as HTMLElement;
+    const lastClone = $ArrayItem[$ArrayItem.length - 1].cloneNode(
+      true
+    ) as HTMLElement;
+
+    firstClone.setAttribute("data-clone", "true");
+    lastClone.setAttribute("data-clone", "true");
+
+    $SLiderList.prepend(lastClone);
+    $SLiderList.scrollLeft = $SLiderList.offsetWidth;
+
+    $SLiderList.append(firstClone);
+  };
+
+  window.onload = clonarItem;
+
+  const setActiveDot = (index: string) => {
+    if ($arrayDots.length === 0) return;
+
+    $arrayDots.forEach((dot) => dot.classList.remove("active"));
+
+    const $indexDot = parseInt(index, 10);
+    if ($indexDot >= 0 && $indexDot < $arrayDots.length) {
+      $arrayDots[$indexDot].classList.add("active");
+    }
+  };
+
+  const getSlideWithDot = (dataSlide: string) => {
+    if (dataSlide) {
+      const $ArrayItem = Array.from($SLiderList.children) as HTMLElement[];
+
+      const sliderActive = $ArrayItem.find(
+        (itemSlider) =>
+          itemSlider.getAttribute("data-slide") === dataSlide &&
+          !itemSlider.hasAttribute("data-clone")
+      );
+
+      if (sliderActive) {
+        return {
+          element: sliderActive,
+          distance: sliderActive.offsetLeft,
+        };
+      }
+    }
+
+    // Si no se encuentra el elemento o si `dataSlide` no está definido, retorna `null`
+    return null;
+  };
+
+  $SLiderList.addEventListener("scrollend", () => {
+    observeSlides();
+  });
+
+  addCustomEventListener("click", ".slider__next", () => {
+    $SLiderList.style.setProperty("--Move", "smooth");
+    moveSLideActive("RIGTH", 1);
+  });
+  addCustomEventListener("click", ".slider__prev", () => {
+    $SLiderList.style.setProperty("--Move", "smooth");
+    moveSLideActive("LEFT", 1);
+  });
+
+  addCustomEventListener("click", ".slider__dot", (e) => {
+    const target = e.target as HTMLElement | null;
+    $SLiderList.style.setProperty("--Move", "smooth");
+
+    const atributeDataSlide = target.getAttribute("data-slide");
+    // console.log(atributeDataSlide);
+
+    const { element, distance } = getSlideWithDot(atributeDataSlide);
+
+    if (element) {
+      setSlideMoveScroll(distance);
+      // console.log(distance);
+    }
+  });
+
+  const moveSLideActive = (direction: Direction, steps: number = 1) => {
+    const $SlideActive = $SLiderList.querySelector(
+      ".slider__item.active"
+    ) as HTMLElement;
+
+    const { ultimoHermano } = obtenerHermanos($SlideActive, direction, steps);
+    if (!ultimoHermano) return;
+
+    const { distance } = getSlidePostion(ultimoHermano);
+    setSlideMoveScroll(distance);
+  };
+
+  const setSlideMoveScroll = (value: number) => {
+    $SLiderList.scrollLeft = value;
+  };
+
+  const getSlidePostion = (item: HTMLElement) => {
+    return {
+      dataPosition: item.getAttribute("data-positionValue"),
+      dataSlide: item.getAttribute("data-slide"),
+      distance: item.offsetLeft,
+    };
+  };
+</script>
+
+<!-- <script>
+  const $SLiderList = document.querySelector(".slider__list") as HTMLElement;
+  const $Datos = document.querySelector("#datos") as HTMLElement;
+
+  let scrollTimeout: number | null = null;
+
+  $SLiderList.addEventListener("scrollend", () => {
+    updateSort($SLiderList);
+  });
+
+  // $SLiderList.addEventListener("scroll", () => {
+  //   if (scrollTimeout !== null) {
+  //     clearTimeout(scrollTimeout);
+  //   }
+  //   scrollTimeout = window.setTimeout(() => {
+  //     updateSort($SLiderList);
+  //   }, 50); // Ajusta el tiempo si es necesario
+  // });
+
+  function updateSort(el: HTMLElement) {
+    const scrollWidth = el.scrollWidth - el.scrollLeft;
+    const scrollLeft = el.scrollLeft;
+    const width = el.offsetWidth;
+    const items = Array.from(el.children) as HTMLElement[];
+
+    if (scrollLeft <= 0) {
+      el.prepend(items[items.length - 1]);
+      el.scrollLeft = scrollLeft + width;
+    }
+
+    if (scrollLeft + width >= scrollWidth) {
+      el.append(items[0]);
+      el.scrollLeft = scrollLeft - width;
+    }
+
+    $Datos.innerHTML = `
+                <p>Scroll Width: ${scrollWidth}px</p>
+                <p>Scroll Left: ${scrollLeft}px</p>
+                <p>Width: ${width}px</p>
+                <p>Item Count: ${items.length}</p>
+                
+            `;
+  }
+
+  window.addEventListener("load", () => {
+    updateSort($SLiderList);
+  });
+</script> -->
+
+<!-- <script>
   import { addCustomEventListener } from "@/utils/CustomEventListener";
 
   const $SLiderList = document.querySelector(".slider__list") as HTMLElement;
@@ -363,4 +613,4 @@ const images = [
 
     prevTranslate = currentTranslate;
   });
-</script>
+</script> -->
