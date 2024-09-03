@@ -1,0 +1,152 @@
+---
+import SectionPage from '@/components/SectionPage.astro';
+import Wrapper from '@/components/Wrapper/Wrapper.astro';
+import { Icon } from 'astro-icon/components';
+
+const images = [
+  'https://editorialtelevisa.brightspotcdn.com/dims4/default/c1d173f/2147483647/strip/true/crop/1200x676+0+22/resize/1000x563!/quality/90/?url=https%3A%2F%2Fk2-prod-editorial-televisa.s3.us-east-1.amazonaws.com%2Fbrightspot%2Fbf%2F72%2F8fa616b543bc913a0c08a7bb4c40%2Ftendencias-decoracion-de-dormitorio.jpg',
+  'https://media.revistaad.es/photos/61643e3acc6386e4f990979e/16:9/w_2560%2Cc_limit/FreidaCoryBerk_1.jpg',
+  'https://www.dormitorum.es/wp-content/uploads/2021/10/spacejoy-XM-miHibz64-unsplash-2-1.jpg',
+  'https://media.revistaad.es/photos/60c22417b84a603be22110d8/16:9/w_2560%2Cc_limit/273545.jpg',
+  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSY4upz0ugOf6vZykZb2270tY_apS6Zrjf9g&s',
+  'https://www.shutterstock.com/image-illustration/mock-poster-two-frames-on-600nw-2265166239.jpg',
+];
+---
+
+<SectionPage>
+  <div class="slider slider--v3">
+    <button class="slider__prev">
+      <Icon name="ArrowIcon" size={25} />
+    </button>
+    <ul class="slider__list">
+      {
+        images.map((img, index) => (
+          <li class:list={[`slider__item`, { active: index === 0 }]} data-slide={index}>
+            <img src={img} alt={`imagen${index}`} />
+          </li>
+        ))
+      }
+    </ul>
+    <nav class="slider__nav"></nav>
+    <button class="slider__next">
+      <Icon name="ArrowIcon" size={25} />
+    </button>
+  </div>
+</SectionPage>
+
+<style lang="scss">
+  .slider {
+    display: grid;
+    gap: 1.5rem;
+
+    &__list {
+      --gaps: 20px;
+      --Move: auto;
+      --transition: none;
+      --sliders-show: 1;
+
+      grid-column: 1 / -1;
+      grid-row: 1 / 2;
+
+      display: flex;
+      gap: var(--gaps);
+
+      transition: var(--transition) 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      overflow-x: scroll;
+      scroll-behavior: var(--Move);
+      scroll-snap-type: x mandatory;
+
+      scrollbar-width: 0;
+
+      &::-webkit-scrollbar {
+        height: 0px;
+      }
+
+      > :nth-child(1n + 1) {
+        scroll-snap-stop: always;
+        scroll-snap-align: start;
+      }
+    }
+
+    &__item {
+      flex: 0 0 calc((100% - ((var(--sliders-show) - 1) * var(--gaps))) / var(--sliders-show));
+
+      &.active img {
+        // filter: invert(70%);
+      }
+
+      > img {
+        width: 100%;
+        aspect-ratio: 16/9;
+        border-radius: 0.5rem;
+      }
+    }
+
+    &__nav {
+      grid-column: 1 / -1;
+      grid-row: 2 / 3;
+      min-height: 2.5rem;
+      justify-self: center;
+      display: flex;
+      align-items: start;
+      padding-block-end: 1.5rem;
+      gap: 0.8rem;
+    }
+
+    &__nav > :global(button) {
+      width: 10px;
+      aspect-ratio: 1/1;
+      outline: 2px solid white;
+      border-radius: 50%;
+
+      &.active {
+        background-color: white;
+      }
+    }
+
+    &__next {
+      grid-column: 1 / -1;
+      grid-row: 1 / span 1;
+      justify-self: end;
+      align-self: center;
+      z-index: 20;
+      border-radius: 50%;
+      color: white;
+      width: 40px;
+      aspect-ratio: 1;
+      display: grid;
+      place-items: center;
+      background-color: rgba(0, 0, 0, 0.566);
+
+      > * {
+        transform: rotate(90deg);
+        pointer-events: none;
+      }
+    }
+
+    &__prev {
+      grid-column: 1 / -1;
+      grid-row: 1 / 2;
+      z-index: 20;
+      border-radius: 50%;
+      align-self: center;
+      color: white;
+      width: 40px;
+      aspect-ratio: 1;
+      display: grid;
+      place-items: center;
+      background-color: rgba(0, 0, 0, 0.566);
+
+      > * {
+        transform: rotate(-90deg);
+        pointer-events: none;
+      }
+    }
+  }
+</style>
+
+<!-- <script>
+  import { SliderResponsive } from '@/scripts/SliderResponsive.ts';
+
+  new SliderResponsive('.slider.slider--v3');
+</script> -->

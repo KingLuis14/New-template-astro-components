@@ -1,14 +1,14 @@
 ---
-import SectionPage from "@/components/SectionPage.astro";
-import Wrapper from "@/components/Wrapper/Wrapper.astro";
-import { Icon } from "astro-icon/components";
+import SectionPage from '@/components/SectionPage.astro';
+import Wrapper from '@/components/Wrapper/Wrapper.astro';
+import { Icon } from 'astro-icon/components';
 
 const images = [
-  "https://static.nationalgeographic.es/files/styles/image_3200/public/75552.ngsversion.1422285553360.jpg?w=1900&h=1267",
-  "https://s1.elespanol.com/2017/05/19/cocinillas/cocinillas_217240812_116336849_1706x960.jpg",
-  "https://img.freepik.com/foto-gratis/vista-animal-gracioso_23-2151098354.jpg?size=626&ext=jpg&ga=GA1.1.2008272138.1724544000&semt=ais_hybrid",
-  "https://hips.hearstapps.com/hmg-prod/images/grumpy-cat-gatos-internet-meme-1582125875.jpg",
-  "https://yt3.googleusercontent.com/bULnA4xs69WDJt5mdQCzeLnSjclI1CviNIxj5HLpN1V6d72GP9BYXy_GKxmyZBD-lW9FvUU=s900-c-k-c0x00ffffff-no-rj",
+  'https://static.nationalgeographic.es/files/styles/image_3200/public/75552.ngsversion.1422285553360.jpg?w=1900&h=1267',
+  'https://s1.elespanol.com/2017/05/19/cocinillas/cocinillas_217240812_116336849_1706x960.jpg',
+  'https://img.freepik.com/foto-gratis/vista-animal-gracioso_23-2151098354.jpg?size=626&ext=jpg&ga=GA1.1.2008272138.1724544000&semt=ais_hybrid',
+  'https://hips.hearstapps.com/hmg-prod/images/grumpy-cat-gatos-internet-meme-1582125875.jpg',
+  'https://yt3.googleusercontent.com/bULnA4xs69WDJt5mdQCzeLnSjclI1CviNIxj5HLpN1V6d72GP9BYXy_GKxmyZBD-lW9FvUU=s900-c-k-c0x00ffffff-no-rj',
 ];
 
 // images.push(images[0]);
@@ -37,10 +37,7 @@ const images = [
       <nav class="slider__nav">
         {
           images.map((img, index) => (
-            <button
-              data-slide={index}
-              class:list={[`slider__dot`, { active: index === 0 }]}
-            />
+            <button data-slide={index} class:list={[`slider__dot`, { active: index === 0 }]} />
           ))
         }
       </nav>
@@ -158,63 +155,46 @@ const images = [
 </style>
 
 <script>
-  import {
-    addCustomEventListener,
-    obtenerHermanos,
-  } from "@/utils/CustomEventListener";
+  import { addCustomEventListener, obtenerHermanos } from '@/utils/CustomEventListener';
 
-  type Direction = "LEFT" | "RIGTH";
-  const $Slider = document.querySelector(".slider") as HTMLElement;
-  const $SLiderList = document.querySelector(".slider__list") as HTMLElement;
+  type Direction = 'LEFT' | 'RIGTH';
+  const $Slider = document.querySelector('.slider') as HTMLElement;
+  const $SLiderList = document.querySelector('.slider__list') as HTMLElement;
   const $ArrayItem = Array.from($SLiderList.children) as HTMLElement[];
-  const $Datos = document.querySelector("#datos") as HTMLElement;
-  const $sliderNavDot = $Slider.querySelector(".slider__nav") as HTMLElement;
-  const $arrayDots = $sliderNavDot
-    ? (Array.from($sliderNavDot.children) as HTMLElement[])
-    : [];
+  const $Datos = document.querySelector('#datos') as HTMLElement;
+  const $sliderNavDot = $Slider.querySelector('.slider__nav') as HTMLElement;
+  const $arrayDots = $sliderNavDot ? (Array.from($sliderNavDot.children) as HTMLElement[]) : [];
 
   const itemObserver = new IntersectionObserver(
     (entries, observer) => {
       entries.forEach((entri) => {
         if (entri.isIntersecting) {
-          $SLiderList.style.setProperty("--Move", "auto");
+          $SLiderList.style.setProperty('--Move', 'auto');
           const $TargetElement = entri.target as HTMLElement;
-          const atributeDataSlide = $TargetElement.getAttribute("data-slide");
+          const atributeDataSlide = $TargetElement.getAttribute('data-slide');
 
-          entri.target.classList.add("active");
+          entri.target.classList.add('active');
           setActiveDot(atributeDataSlide);
 
-          if ($TargetElement.hasAttribute("data-clone")) {
-            const $ArrayItem = Array.from(
-              $SLiderList.children
-            ) as HTMLElement[];
+          if ($TargetElement.hasAttribute('data-clone')) {
+            const $ArrayItem = Array.from($SLiderList.children) as HTMLElement[];
 
-            const atributeDataSlide = $TargetElement.getAttribute("data-slide");
+            const atributeDataSlide = $TargetElement.getAttribute('data-slide');
 
             const $original = $ArrayItem.find(
-              (item) =>
-                item.getAttribute("data-slide") === atributeDataSlide &&
-                !item.hasAttribute("data-clone")
+              (item) => item.getAttribute('data-slide') === atributeDataSlide && !item.hasAttribute('data-clone')
             );
 
             if ($original) {
               const originalIndex = $ArrayItem.indexOf($original);
 
-              const elementsBeforeOriginal = $ArrayItem.slice(
-                0,
-                originalIndex + 1
-              );
+              const elementsBeforeOriginal = $ArrayItem.slice(0, originalIndex + 1);
 
               // console.log(elementsBeforeOriginal);
 
-              const totalWidth = elementsBeforeOriginal.reduce(
-                (sum, element, index) => {
-                  return index < elementsBeforeOriginal.length - 1
-                    ? sum + element.offsetWidth
-                    : sum;
-                },
-                0
-              );
+              const totalWidth = elementsBeforeOriginal.reduce((sum, element, index) => {
+                return index < elementsBeforeOriginal.length - 1 ? sum + element.offsetWidth : sum;
+              }, 0);
 
               $SLiderList.scrollLeft = totalWidth;
 
@@ -222,14 +202,14 @@ const images = [
             }
           }
         } else {
-          entri.target.classList.remove("active");
+          entri.target.classList.remove('active');
         }
 
         observer.unobserve(entri.target);
       });
     },
     {
-      root: document.querySelector(".slider__list"),
+      root: document.querySelector('.slider__list'),
       threshold: 0.8,
     }
   );
@@ -241,12 +221,10 @@ const images = [
 
   const clonarItem = () => {
     const firstClone = $ArrayItem[0].cloneNode(true) as HTMLElement;
-    const lastClone = $ArrayItem[$ArrayItem.length - 1].cloneNode(
-      true
-    ) as HTMLElement;
+    const lastClone = $ArrayItem[$ArrayItem.length - 1].cloneNode(true) as HTMLElement;
 
-    firstClone.setAttribute("data-clone", "true");
-    lastClone.setAttribute("data-clone", "true");
+    firstClone.setAttribute('data-clone', 'true');
+    lastClone.setAttribute('data-clone', 'true');
 
     $SLiderList.prepend(lastClone);
     $SLiderList.scrollLeft = $SLiderList.offsetWidth;
@@ -259,11 +237,11 @@ const images = [
   const setActiveDot = (index: string) => {
     if ($arrayDots.length === 0) return;
 
-    $arrayDots.forEach((dot) => dot.classList.remove("active"));
+    $arrayDots.forEach((dot) => dot.classList.remove('active'));
 
     const $indexDot = parseInt(index, 10);
     if ($indexDot >= 0 && $indexDot < $arrayDots.length) {
-      $arrayDots[$indexDot].classList.add("active");
+      $arrayDots[$indexDot].classList.add('active');
     }
   };
 
@@ -272,9 +250,7 @@ const images = [
       const $ArrayItem = Array.from($SLiderList.children) as HTMLElement[];
 
       const sliderActive = $ArrayItem.find(
-        (itemSlider) =>
-          itemSlider.getAttribute("data-slide") === dataSlide &&
-          !itemSlider.hasAttribute("data-clone")
+        (itemSlider) => itemSlider.getAttribute('data-slide') === dataSlide && !itemSlider.hasAttribute('data-clone')
       );
 
       if (sliderActive) {
@@ -289,24 +265,24 @@ const images = [
     return null;
   };
 
-  $SLiderList.addEventListener("scrollend", () => {
+  $SLiderList.addEventListener('scrollend', () => {
     observeSlides();
   });
 
-  addCustomEventListener("click", ".slider__next", () => {
-    $SLiderList.style.setProperty("--Move", "smooth");
-    moveSLideActive("RIGTH", 1);
+  addCustomEventListener('click', '.slider__next', () => {
+    $SLiderList.style.setProperty('--Move', 'smooth');
+    moveSLideActive('RIGTH', 1);
   });
-  addCustomEventListener("click", ".slider__prev", () => {
-    $SLiderList.style.setProperty("--Move", "smooth");
-    moveSLideActive("LEFT", 1);
+  addCustomEventListener('click', '.slider__prev', () => {
+    $SLiderList.style.setProperty('--Move', 'smooth');
+    moveSLideActive('LEFT', 1);
   });
 
-  addCustomEventListener("click", ".slider__dot", (e) => {
+  addCustomEventListener('click', '.slider__dot', (e) => {
     const target = e.target as HTMLElement | null;
-    $SLiderList.style.setProperty("--Move", "smooth");
+    $SLiderList.style.setProperty('--Move', 'smooth');
 
-    const atributeDataSlide = target.getAttribute("data-slide");
+    const atributeDataSlide = target.getAttribute('data-slide');
     // console.log(atributeDataSlide);
 
     const { element, distance } = getSlideWithDot(atributeDataSlide);
@@ -318,9 +294,7 @@ const images = [
   });
 
   const moveSLideActive = (direction: Direction, steps: number = 1) => {
-    const $SlideActive = $SLiderList.querySelector(
-      ".slider__item.active"
-    ) as HTMLElement;
+    const $SlideActive = $SLiderList.querySelector('.slider__item.active') as HTMLElement;
 
     const { ultimoHermano } = obtenerHermanos($SlideActive, direction, steps);
     if (!ultimoHermano) return;
@@ -335,8 +309,8 @@ const images = [
 
   const getSlidePostion = (item: HTMLElement) => {
     return {
-      dataPosition: item.getAttribute("data-positionValue"),
-      dataSlide: item.getAttribute("data-slide"),
+      dataPosition: item.getAttribute('data-positionValue'),
+      dataSlide: item.getAttribute('data-slide'),
       distance: item.offsetLeft,
     };
   };
