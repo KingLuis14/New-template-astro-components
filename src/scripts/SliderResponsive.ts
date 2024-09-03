@@ -99,12 +99,19 @@ export class SliderResponsive {
       this.slider
     );
 
-    window.addEventListener('resize', this.#throttledResize);
+    const resize = new ResizeObserver((entries) => {
+      entries.forEach((entry) => {
+        this.#throttledResize(entry.target);
+        console.log(entry.target);
+      });
+    });
+    resize.observe(this.$sliderList);
+
+    // window.addEventListener('resize', this.#throttledResize);
 
     this.$sliderList.addEventListener('scrollend', () => {
       this.#disableSmoothScroll();
       this.#observeSlides();
-      console.log(this.$sliderList.scrollLeft);
     });
   }
 
@@ -135,6 +142,7 @@ export class SliderResponsive {
           const elementWithDataReturn = visibleEntries.find((entry) => {
             return (entry.target as HTMLElement).hasAttribute('data-return');
           });
+          // console.log('No hay  un elemento activo visible en el slider.');
 
           if (elementWithDataReturn) {
             const $Element = elementWithDataReturn.target as HTMLElement;
@@ -154,7 +162,7 @@ export class SliderResponsive {
           });
 
           const atributeDataSlide = $sliderActive.target.getAttribute('data-slide');
-          console.log({ atributeDataSlide });
+          // console.log({ atributeDataSlide });
 
           this.#setActiveDot(atributeDataSlide);
 
@@ -165,7 +173,7 @@ export class SliderResponsive {
       },
       {
         root: this.$sliderList,
-        threshold: 0.8,
+        threshold: 0,
       }
     );
   };
@@ -182,7 +190,7 @@ export class SliderResponsive {
     if (!ultimoHermano) return;
 
     const { distance } = this.#getSlidePostion(ultimoHermano);
-    console.log({ ultimoHermano }, ultimoHermano.offsetLeft);
+    // console.log({ ultimoHermano }, ultimoHermano.offsetLeft);
     this.#setSlideMoveScroll(distance);
   }
 

@@ -56,6 +56,7 @@ const images = [
       grid-column: 1 / -1;
       grid-row: 1 / 2;
 
+      position: relative;
       display: flex;
       gap: var(--gaps);
 
@@ -66,8 +67,14 @@ const images = [
 
       scrollbar-width: 0;
 
+      &::-webkit-scrollbar-track {
+        background: orange; /* color of the tracking area */
+      }
       &::-webkit-scrollbar {
-        height: 0px;
+        height: 20px;
+      }
+      &::-webkit-scrollbar-thumb {
+        background-color: blue; /* color of the scroll thumb */
       }
 
       > :nth-child(3n + 1) {
