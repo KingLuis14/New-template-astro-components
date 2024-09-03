@@ -50,7 +50,7 @@ const images = [
       --gaps: 20px;
       --Move: auto;
       --transition: none;
-      --sliders-show: 2;
+      --sliders-show: 4;
 
       grid-column: 1 / -1;
       grid-row: 1 / 2;
@@ -69,17 +69,15 @@ const images = [
         height: 0px;
       }
 
-      @media screen and (width < 768px) {
-        > :nth-child(2n + 1) {
-          scroll-snap-stop: always;
-          scroll-snap-align: start;
-        }
+      > :nth-child(4n + 1) {
+        scroll-snap-stop: always;
+        scroll-snap-align: start;
       }
 
-      @media screen and (768px <= width <= 1400px) {
-        --sliders-show: 4;
+      @media screen and (width < 768px) {
+        --sliders-show: 2;
 
-        > :nth-child(4n + 1) {
+        > :nth-child(2n + 1) {
           scroll-snap-stop: always;
           scroll-snap-align: start;
         }

@@ -23,6 +23,7 @@ export class SliderResponsive {
     this.#eventsElements();
     this.#insertectionOberver();
     this.#activeSliderItem();
+    this.#observeSlides();
   }
 
   #clonarItem() {
@@ -49,6 +50,9 @@ export class SliderResponsive {
       if (index === lastElements.length - 1) clone.setAttribute('data-return', 'true');
       this.$sliderList.prepend(clone);
     });
+    this.#setSlideMoveScroll(totalClonesWidth);
+
+    // console.log({ totalClonesWidth });
   }
 
   #initElements() {
@@ -74,9 +78,6 @@ export class SliderResponsive {
       '.slider__next',
       () => {
         this.#activeSmoothScroll();
-        const $SlideActive = this.slider.querySelector('.slider__item[data-active-slider]') as HTMLElement;
-        // console.log($SlideActive);
-
         this.#moveSLideActive('RIGTH', this.#getSlidersShow());
       },
       this.slider
@@ -103,7 +104,7 @@ export class SliderResponsive {
     this.$sliderList.addEventListener('scrollend', () => {
       this.#disableSmoothScroll();
       this.#observeSlides();
-      // console.log(this.$sliderList.scrollLeft);
+      console.log(this.$sliderList.scrollLeft);
     });
   }
 
@@ -139,9 +140,7 @@ export class SliderResponsive {
             const $Element = elementWithDataReturn.target as HTMLElement;
             const atributeDataSlide = $Element.getAttribute('data-slide');
 
-            const $original = this.$sliderItems.find(
-              (item) => item.getAttribute('data-slide') === atributeDataSlide && !item.hasAttribute('data-clone')
-            );
+            const $original = this.$sliderItems.find((item) => item.getAttribute('data-slide') === atributeDataSlide && !item.hasAttribute('data-clone'));
 
             const distanceLeft = $original.offsetLeft;
             this.#setSlideMoveScroll(distanceLeft);
@@ -155,6 +154,8 @@ export class SliderResponsive {
           });
 
           const atributeDataSlide = $sliderActive.target.getAttribute('data-slide');
+          console.log({ atributeDataSlide });
+
           this.#setActiveDot(atributeDataSlide);
 
           // console.log('Hay al menos un elemento activo visible en el slider.');
@@ -179,9 +180,9 @@ export class SliderResponsive {
 
     const { ultimoHermano } = obtenerHermanos($SlideActive, direction, steps);
     if (!ultimoHermano) return;
-    // console.log(ultimoHermano);
 
     const { distance } = this.#getSlidePostion(ultimoHermano);
+    console.log({ ultimoHermano }, ultimoHermano.offsetLeft);
     this.#setSlideMoveScroll(distance);
   }
 
@@ -198,22 +199,6 @@ export class SliderResponsive {
         dot.classList.add('active');
       }
     });
-
-    // if ($indexDot >= 0 && $indexDot < this.$arrayDots.length) {
-    //   this.$arrayDots[$indexDot].classList.add('active');
-    // }
-  }
-
-  #reoderSlider(targetElement: HTMLElement) {
-    const $ArrayItems = Array.from(this.$sliderList.children) as HTMLElement[];
-    const atributeDataSlide = targetElement.getAttribute('data-slide');
-    const $SliderOriginal = $ArrayItems.find((item) => {
-      return item.getAttribute('data-slide') === atributeDataSlide && !item.hasAttribute('data-clone');
-    });
-
-    if ($SliderOriginal) {
-      this.#setSlideMoveScroll($SliderOriginal.offsetLeft);
-    }
   }
 
   #getSlidePostion(item: HTMLElement) {
@@ -230,9 +215,7 @@ export class SliderResponsive {
 
   #getSlideWithDot(dataSlide: string) {
     if (dataSlide) {
-      const sliderActive = this.$arraySLiderItems.find(
-        (itemSlider) => itemSlider.getAttribute('data-slide') === dataSlide && !itemSlider.hasAttribute('data-clone')
-      );
+      const sliderActive = this.$arraySLiderItems.find((itemSlider) => itemSlider.getAttribute('data-slide') === dataSlide && !itemSlider.hasAttribute('data-clone'));
 
       if (sliderActive) {
         return {
@@ -241,8 +224,6 @@ export class SliderResponsive {
         };
       }
     }
-
-    // Si no se encuentra el elemento o si `dataSlide` no está definido, retorna `null`
     return null;
   }
 
@@ -272,9 +253,6 @@ export class SliderResponsive {
 
   #getSlidersShow() {
     return Number(getComputedStyle(this.$sliderList).getPropertyValue('--sliders-show'));
-  }
-  #setSlidersShow(value: string) {
-    this.$sliderList.style.setProperty('--sliders-show', value);
   }
 
   #throttle(cb: (...args: any[]) => void, delay: number = 1000) {
