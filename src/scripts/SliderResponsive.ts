@@ -2,8 +2,16 @@ import { addCustomEventListener, obtenerHermanos } from '@/utils/CustomEventList
 
 type Direction = 'LEFT' | 'RIGTH';
 
+interface Props {
+  slider: string;
+  autoPlayOptions?: {
+    time: number;
+  };
+}
+
 export class SliderResponsive {
   private slider: HTMLElement | null = null;
+  private autoPlayoptions: { time: number } = null;
 
   private $sliderNavDot: HTMLElement | null = null;
   private $sliderList: HTMLElement | null = null;
@@ -12,16 +20,21 @@ export class SliderResponsive {
   private $arrayDots: HTMLElement[] = [];
 
   private itemObserver: IntersectionObserver;
+  private autoplayEnabled: boolean;
+  private autoplayInterval: NodeJS.Timeout | null = null;
 
-  constructor(slider: string) {
+  constructor({ slider, autoPlayOptions }: Props) {
     this.slider = document.querySelector<HTMLElement>(slider);
-
     this.#initElements();
-    this.#clonarItem();
     this.#eventsElements();
     this.#insertectionOberver();
-    this.#activeSliderItem();
     this.#observeSlides();
+    this.autoPlayoptions = autoPlayOptions;
+    this.autoplayEnabled = !!autoPlayOptions;
+
+    if (autoPlayOptions) {
+      this.startAutoplay(this.autoplayAction, autoPlayOptions.time);
+    }
   }
 
   #clonarItem() {
@@ -98,7 +111,6 @@ export class SliderResponsive {
     const resize = new ResizeObserver((entries) => {
       entries.forEach((entry) => {
         this.#throttledResize(entry.target);
-        // console.log(entry.target);
       });
     });
     resize.observe(this.$sliderList);
@@ -106,8 +118,6 @@ export class SliderResponsive {
     this.#initScrollEvents();
 
     // window.addEventListener('resize', this.#throttledResize);
-
-    // this.$sliderList.addEventListener('cus')
   }
 
   #insertectionOberver = () => {
@@ -314,6 +324,13 @@ export class SliderResponsive {
     this.$sliderNavDot.appendChild(fragment);
   }
 
+  #resetAutoPlay() {
+    if (this.autoplayEnabled) {
+      this.stopAutoplay();
+      this.startAutoplay(this.autoplayAction, this.autoPlayoptions.time);
+    }
+  }
+
   // poluifyll scroll
 
   #initScrollEvents() {
@@ -323,6 +340,7 @@ export class SliderResponsive {
       this.$sliderList.addEventListener('scrollend', () => {
         this.#disableSmoothScroll();
         this.#observeSlides();
+        this.#resetAutoPlay();
       });
     } else {
       // console.log('No soporta');
@@ -332,12 +350,9 @@ export class SliderResponsive {
       this.$sliderList.addEventListener('customscrollend', () => {
         this.#disableSmoothScroll();
         this.#observeSlides();
+        this.#resetAutoPlay();
       });
     }
-
-    // si funciona scrollend
-
-    // si no funciona
   }
 
   #scrollEnd = this.#debounce((e: Event) => {
@@ -359,4 +374,30 @@ export class SliderResponsive {
       }, wait);
     };
   }
+
+  // Función para iniciar el autoplay con setInterval
+  private startAutoplay = (cb: () => void, interval: number = 4000): (() => void) => {
+    if (this.autoplayInterval !== null) {
+      return this.stopAutoplay;
+    }
+
+    this.autoplayInterval = setInterval(cb, interval);
+
+    // Devuelve una función para detener el autoplay
+    return this.stopAutoplay;
+  };
+
+  // Método para detener el autoplay
+  private stopAutoplay = (): void => {
+    if (this.autoplayInterval !== null) {
+      clearInterval(this.autoplayInterval);
+      this.autoplayInterval = null;
+    }
+  };
+
+  private autoplayAction = (): void => {
+    this.#activeSmoothScroll();
+    this.#moveSLideActive('RIGTH', this.#getSlidersShow());
+    // console.log('Ejecutado cada 4 segundos', this.slider);
+  };
 }

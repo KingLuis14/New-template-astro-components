@@ -28,7 +28,10 @@ import SliderResponsiveBanner from '@/sections/SliderResponsiveBanner.astro';
 <script>
   import { SliderResponsive } from '@/scripts/SliderResponsive.ts';
 
-  new SliderResponsive('.slider.slider--v3');
-  new SliderResponsive('.slider.slider--v2');
-  new SliderResponsive('.slider.slider--v1');
+  // new SliderResponsive('.slider.slider--v3', true);
+  // new SliderResponsive('.slider.slider--v2');
+  // new SliderResponsive('.slider.slider--v1', true);
+  new SliderResponsive({ slider: '.slider.slider--v3', autoPlayOptions: { time: 8000 } });
+  new SliderResponsive({ slider: '.slider.slider--v2', autoPlayOptions: { time: 5000 } });
+  new SliderResponsive({ slider: '.slider.slider--v1' });
 </script>
