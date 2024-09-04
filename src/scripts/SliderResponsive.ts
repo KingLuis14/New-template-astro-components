@@ -3,10 +3,8 @@ import { addCustomEventListener, obtenerHermanos } from '@/utils/CustomEventList
 type Direction = 'LEFT' | 'RIGTH';
 
 export class SliderResponsive {
-  // Parámetro que recibe la clase
   private slider: HTMLElement | null = null;
 
-  // Variables privadas a inicializar
   private $sliderNavDot: HTMLElement | null = null;
   private $sliderList: HTMLElement | null = null;
   private $sliderItems: HTMLElement[] | null = null;
@@ -51,8 +49,6 @@ export class SliderResponsive {
       this.$sliderList.prepend(clone);
     });
     this.#setSlideMoveScroll(totalClonesWidth);
-
-    // console.log({ totalClonesWidth });
   }
 
   #initElements() {
@@ -102,17 +98,16 @@ export class SliderResponsive {
     const resize = new ResizeObserver((entries) => {
       entries.forEach((entry) => {
         this.#throttledResize(entry.target);
-        console.log(entry.target);
+        // console.log(entry.target);
       });
     });
     resize.observe(this.$sliderList);
 
+    this.#initScrollEvents();
+
     // window.addEventListener('resize', this.#throttledResize);
 
-    this.$sliderList.addEventListener('scrollend', () => {
-      this.#disableSmoothScroll();
-      this.#observeSlides();
-    });
+    // this.$sliderList.addEventListener('cus')
   }
 
   #insertectionOberver = () => {
@@ -142,7 +137,6 @@ export class SliderResponsive {
           const elementWithDataReturn = visibleEntries.find((entry) => {
             return (entry.target as HTMLElement).hasAttribute('data-return');
           });
-          // console.log('No hay  un elemento activo visible en el slider.');
 
           if (elementWithDataReturn) {
             const $Element = elementWithDataReturn.target as HTMLElement;
@@ -152,8 +146,6 @@ export class SliderResponsive {
 
             const distanceLeft = $original.offsetLeft;
             this.#setSlideMoveScroll(distanceLeft);
-
-            // console.log('Elemento con data-return:', elementWithDataReturn.target);
           }
         } else {
           const visibleEntries = entries.filter((entry) => entry.isIntersecting);
@@ -162,18 +154,14 @@ export class SliderResponsive {
           });
 
           const atributeDataSlide = $sliderActive.target.getAttribute('data-slide');
-          // console.log({ atributeDataSlide });
-
           this.#setActiveDot(atributeDataSlide);
-
-          // console.log('Hay al menos un elemento activo visible en el slider.');
         }
 
         entries.forEach((entry) => observer.unobserve(entry.target));
       },
       {
         root: this.$sliderList,
-        threshold: 0,
+        threshold: 0.5,
       }
     );
   };
@@ -190,7 +178,6 @@ export class SliderResponsive {
     if (!ultimoHermano) return;
 
     const { distance } = this.#getSlidePostion(ultimoHermano);
-    // console.log({ ultimoHermano }, ultimoHermano.offsetLeft);
     this.#setSlideMoveScroll(distance);
   }
 
@@ -325,5 +312,51 @@ export class SliderResponsive {
     });
 
     this.$sliderNavDot.appendChild(fragment);
+  }
+
+  // poluifyll scroll
+
+  #initScrollEvents() {
+    if ('onscrollend' in window) {
+      // console.log('si soporta');
+
+      this.$sliderList.addEventListener('scrollend', () => {
+        this.#disableSmoothScroll();
+        this.#observeSlides();
+      });
+    } else {
+      // console.log('No soporta');
+      this.$sliderList.addEventListener('scroll', this.#scrollEnd, { passive: true });
+
+      // Escuchar el evento customscrollend
+      this.$sliderList.addEventListener('customscrollend', () => {
+        this.#disableSmoothScroll();
+        this.#observeSlides();
+      });
+    }
+
+    // si funciona scrollend
+
+    // si no funciona
+  }
+
+  #scrollEnd = this.#debounce((e: Event) => {
+    (e.target as HTMLElement).dispatchEvent(
+      new CustomEvent('customscrollend', {
+        bubbles: true,
+      })
+    );
+  }, 100);
+
+  // Función debounce para manejar la espera del evento scroll
+  #debounce(callback: (e: Event) => void, wait: number) {
+    let timeout: number | undefined;
+    return (e: Event) => {
+      clearTimeout(timeout);
+
+      timeout = window.setTimeout(() => {
+        callback(e);
+      }, wait);
+    };
   }
 }

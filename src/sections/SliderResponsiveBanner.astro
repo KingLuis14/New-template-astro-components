@@ -26,6 +26,10 @@ const images = [
       ))
     }
   </ul>
+  <div class="slider__content">
+    <h1>Posicionamiento de contenido superpuesto con CSS Grid</h1>
+    <p>CSS Grid y propiedades de alineación para crear diseños de componentes que contienen múltiples elementos superpuestos</p>
+  </div>
   <nav class="slider__nav"></nav>
   <button class="slider__next">
     <Icon name="ArrowIcon" size={25} />
@@ -38,7 +42,7 @@ const images = [
     gap: 1.5rem;
 
     &__list {
-      --gaps: 20px;
+      --gaps: 0px;
       --Move: auto;
       --transition: none;
       --sliders-show: 1;
@@ -57,14 +61,8 @@ const images = [
 
       scrollbar-width: 0;
 
-      &::-webkit-scrollbar-track {
-        background: orange; /* color of the tracking area */
-      }
       &::-webkit-scrollbar {
-        height: 20px;
-      }
-      &::-webkit-scrollbar-thumb {
-        background-color: blue; /* color of the scroll thumb */
+        height: 0px;
       }
 
       > :nth-child(1n + 1) {
@@ -75,6 +73,7 @@ const images = [
 
     &__item {
       flex: 0 0 calc((100% - ((var(--sliders-show) - 1) * var(--gaps))) / var(--sliders-show));
+      // flex: 0 0 calc(100% / var(--sliders-show));
 
       &.active img {
         // filter: invert(70%);
@@ -82,11 +81,39 @@ const images = [
 
       > img {
         width: 100%;
+        min-height: 70svh;
         aspect-ratio: 16/9;
 
         @media screen and (width >= 768px) {
           aspect-ratio: 16/6;
         }
+      }
+    }
+
+    &__content {
+      grid-column: 1 / -1;
+      grid-row: 1 / span 1;
+      background-color: rgba(0, 0, 0, 0.65);
+      z-index: 10;
+      color: white;
+      display: grid;
+      gap: 1.5rem;
+      place-content: center;
+      place-items: center;
+      text-align: center;
+      padding-inline: 3rem;
+
+      > p,
+      h1 {
+        max-width: 700px;
+      }
+
+      > h1 {
+        font-size: var(--fs-superTitleSub);
+      }
+
+      > p {
+        font-size: var(--fs-normal);
       }
     }
 
