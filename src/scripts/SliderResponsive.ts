@@ -117,7 +117,10 @@ export class SliderResponsive {
 
     this.#initScrollEvents();
 
-    // window.addEventListener('resize', this.#throttledResize);
+    this.$sliderList.addEventListener('mouseenter', this.#throttledDisableAutoPlay);
+    this.$sliderList.addEventListener('mouseleave', this.#resetAutoPlay.bind(this));
+    this.$sliderList.addEventListener('touchstart', this.#throttledDisableAutoPlay);
+    this.$sliderList.addEventListener('touchend', this.#resetAutoPlay.bind(this));
   }
 
   #insertectionOberver = () => {
@@ -400,4 +403,10 @@ export class SliderResponsive {
     this.#moveSLideActive('RIGTH', this.#getSlidersShow());
     // console.log('Ejecutado cada 4 segundos', this.slider);
   };
+
+  #throttledDisableAutoPlay = this.#throttle(() => {
+    if (this.autoplayEnabled) {
+      this.stopAutoplay();
+    }
+  }, 250);
 }
