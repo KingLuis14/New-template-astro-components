@@ -1,0 +1,74 @@
+---
+import { Icon } from 'astro-icon/components';
+
+import type { NumericRange, CreateArrayWithLengthX } from '@/utils/CustomEventListener.ts';
+
+type RANGE_START = NumericRange<CreateArrayWithLengthX<1>, 5>;
+
+export interface Comentario {
+  image: string;
+  title: string;
+  job: string;
+  comment: string;
+  star?: RANGE_START;
+}
+
+interface Props {
+  data: Comentario;
+}
+
+const { comment, image, job, title, star } = Astro.props.data;
+---
+
+<div class="comentario textFlow" itemscope itemtype="http://schema.org/Review">
+  <img class="comentario__img" src={image} alt={title} itemprop="image" />
+  <h4 class="comentario__name" itemprop="name">{title}</h4>
+  <small class="comentario__job" itemprop="jobTitle">{job}</small>
+  <p class="comentario__description" itemprop="reviewBody">{comment}</p>
+
+  <div class="comentario__rating" class="estrellas">
+    <button>
+      {Array.from({ length: 5 }, () => <Icon name="start" size={20} />)}
+    </button>
+  </div>
+</div>
+
+<style lang="scss">
+  .comentario {
+    background-color: var(--color-blue-900);
+    border-radius: 0.5rem;
+    color: white;
+    padding: 1rem;
+    display: grid;
+    position: relative;
+
+    &__img {
+      width: 50px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+    }
+
+    &__job {
+      margin-block: 0.25rem 1rem;
+    }
+
+    &__rating {
+      top: 1rem;
+      right: 1rem;
+      position: absolute;
+
+      > button {
+        > svg:hover {
+          color: yellow;
+        }
+        > svg:has(~ :hover) {
+          color: yellow;
+        }
+      }
+    }
+
+    &__description {
+      font-size: var(--fs-small);
+    }
+  }
+</style>

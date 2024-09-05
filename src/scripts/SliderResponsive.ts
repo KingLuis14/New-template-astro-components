@@ -4,6 +4,7 @@ type Direction = 'LEFT' | 'RIGTH';
 
 interface Props {
   slider: string;
+  sliderItem?: string;
   autoPlayOptions?: {
     time: number;
   };
@@ -22,9 +23,11 @@ export class SliderResponsive {
   private itemObserver: IntersectionObserver;
   private autoplayEnabled: boolean;
   private autoplayInterval: NodeJS.Timeout | null = null;
+  private selectorSliderItem: string = null;
 
-  constructor({ slider, autoPlayOptions }: Props) {
+  constructor({ slider, autoPlayOptions, sliderItem = '.slider__item' }: Props) {
     this.slider = document.querySelector<HTMLElement>(slider);
+    this.selectorSliderItem = sliderItem;
     this.#initElements();
     this.#eventsElements();
     this.#insertectionOberver();
@@ -43,7 +46,7 @@ export class SliderResponsive {
       existingClones.forEach((clone) => clone.remove());
     }
 
-    this.$sliderItems = Array.from(this.$sliderList.querySelectorAll<HTMLElement>('.slider__item:not([data-clone="true"])'));
+    this.$sliderItems = Array.from(this.$sliderList.querySelectorAll<HTMLElement>(`${this.selectorSliderItem}:not([data-clone="true"]`));
     const { firstElements, lastElements } = this.#getFirstAndLastElements(this.$sliderItems, this.#getSlidersShow());
 
     let totalClonesWidth = 0;
@@ -67,7 +70,7 @@ export class SliderResponsive {
   #initElements() {
     this.$sliderNavDot = this.slider.querySelector<HTMLElement>('.slider__nav');
     this.$sliderList = this.slider.querySelector<HTMLElement>('.slider__list');
-    this.$sliderItems = Array.from(this.$sliderList.querySelectorAll<HTMLElement>('.slider__item'));
+    this.$sliderItems = Array.from(this.$sliderList.querySelectorAll<HTMLElement>(`${this.selectorSliderItem}`));
     this.$arrayDots = this.$sliderNavDot ? (Array.from(this.$sliderNavDot.children) as HTMLElement[]) : [];
     this.$arraySLiderItems = this.$sliderList ? (Array.from(this.$sliderList.children) as HTMLElement[]) : [];
   }
@@ -185,7 +188,7 @@ export class SliderResponsive {
   };
 
   #moveSLideActive(direction: Direction, steps: number = 1) {
-    const $SlideActive = this.slider.querySelector('.slider__item[data-active-slider]') as HTMLElement;
+    const $SlideActive = this.slider.querySelector(`${this.selectorSliderItem}[data-active-slider]`) as HTMLElement;
 
     const { ultimoHermano } = obtenerHermanos($SlideActive, direction, steps);
     if (!ultimoHermano) return;

@@ -14,6 +14,7 @@ import SliderScroll from '@/sections/SliderScroll.astro';
 import SliderResponsive from '@/sections/SliderResponsive.astro';
 import SliderResponsiveV2 from '@/sections/SliderResponsiveV2.astro';
 import SliderResponsiveBanner from '@/sections/SliderResponsiveBanner.astro';
+import Comentarios from '@/sections/Comentarios.astro';
 ---
 
 <MainLayout titulo="xd" descripction="e">
@@ -21,6 +22,7 @@ import SliderResponsiveBanner from '@/sections/SliderResponsiveBanner.astro';
     <SliderResponsiveBanner />
     <SliderResponsiveV2 />
     <SliderResponsive />
+    <Comentarios />
     <Botones />
   </main>
 </MainLayout>
@@ -28,9 +30,6 @@ import SliderResponsiveBanner from '@/sections/SliderResponsiveBanner.astro';
 <script>
   import { SliderResponsive } from '@/scripts/SliderResponsive.ts';
 
-  // new SliderResponsive('.slider.slider--v3', true);
-  // new SliderResponsive('.slider.slider--v2');
-  // new SliderResponsive('.slider.slider--v1', true);
   new SliderResponsive({ slider: '.slider.slider--v3', autoPlayOptions: { time: 8000 } });
   new SliderResponsive({ slider: '.slider.slider--v2', autoPlayOptions: { time: 5000 } });
   new SliderResponsive({ slider: '.slider.slider--v1' });

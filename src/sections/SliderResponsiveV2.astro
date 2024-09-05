@@ -1,5 +1,6 @@
 ---
 import SectionPage from '@/components/SectionPage.astro';
+import Typographic from '@/components/Typographic.astro';
 import Wrapper from '@/components/Wrapper/Wrapper.astro';
 import { Icon } from 'astro-icon/components';
 
@@ -20,6 +21,7 @@ const images = [
 
 <SectionPage>
   <Wrapper>
+    <Typographic as="h2" size="sectionTitle" theme="theme2">Slider con autoplay</Typographic>
     <div class="slider slider--v2">
       <button class="slider__prev">
         <Icon name="ArrowIcon" size={25} />
