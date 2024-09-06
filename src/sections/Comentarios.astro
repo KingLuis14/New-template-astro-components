@@ -8,45 +8,45 @@ import { Icon } from 'astro-icon/components';
 const comentarios: Comentario[] = [
   {
     image: 'https://madebydesignesia.com/themes/autoev/images/testimonial/1.webp',
-    title: 'Increíble Servicio',
+    author: 'Increíble Servicio',
     job: 'Diseñador Gráfico',
     comment: 'El trabajo fue impecable, superó todas mis expectativas. Definitivamente los recomendaría.',
     star: 5,
   },
   {
     image: 'https://madebydesignesia.com/themes/autoev/images/testimonial/2.webp',
-    title: 'Altamente Recomendado',
+    author: 'Altamente Recomendado',
     job: 'Desarrollador Web',
     comment: 'El equipo fue muy profesional y atento a cada una de nuestras solicitudes. Lograron captar la esencia de lo que queríamos con rapidez.',
     star: 4,
   },
   {
     image: 'https://madebydesignesia.com/themes/autoev/images/testimonial/3.webp',
-    title: 'Satisfecho con el Resultado',
+    author: 'Satisfecho con el Resultado',
     job: 'Fotógrafo',
     comment: 'La calidad del trabajo es innegable y la comunicación fue excelente durante todo el proceso.',
     star: 5,
   },
   {
     image: 'https://madebydesignesia.com/themes/autoev/images/testimonial/4.webp',
-    title: 'Buen Servicio al Cliente',
+    author: 'Buen Servicio al Cliente',
     job: 'Gerente de Marketing',
     comment: 'El equipo fue muy receptivo y siempre estuvo dispuesto a ayudar. Aunque el proyecto se retrasó un poco, la calidad final compensó el tiempo extra.',
     star: 3,
   },
   {
     image: 'https://madebydesignesia.com/themes/autoev/images/testimonial/5.webp',
-    title: 'Trabajo de Calidad',
+    author: 'Trabajo de Calidad',
     job: 'Consultor SEO',
     comment: 'A pesar de que el precio fue un poco alto, el resultado final lo justificó completamente.',
     star: 4,
   },
   {
     image: 'https://madebydesignesia.com/themes/autoev/images/testimonial/6.webp',
-    title: 'Excelente Experiencia',
+    author: 'Excelente Experiencia',
     job: 'Community Manager',
     comment: 'Trabajar con ellos fue un placer. El equipo fue muy profesional y el proyecto se entregó antes de lo previsto, con un nivel de calidad excepcional.',
-    star: 5,
+    star: 3,
   },
 ];
 ---
@@ -192,5 +192,5 @@ const comentarios: Comentario[] = [
 <script>
   import { SliderResponsive } from '@/scripts/SliderResponsive.ts';
 
-  new SliderResponsive({ slider: '.slider.slider--v4', autoPlayOptions: { time: 4000 } });
+  new SliderResponsive({ slider: '.slider.slider--v4' });
 </script>

@@ -7,7 +7,7 @@ type RANGE_START = NumericRange<CreateArrayWithLengthX<1>, 5>;
 
 export interface Comentario {
   image: string;
-  title: string;
+  author: string;
   job: string;
   comment: string;
   star?: RANGE_START;
@@ -17,22 +17,77 @@ interface Props {
   data: Comentario;
 }
 
-const { comment, image, job, title, star } = Astro.props.data;
+const { comment, image, job, author, star } = Astro.props.data;
 ---
 
+<!-- <div itemscope itemtype="http://schema.org/LocalBusiness">
+  <meta itemprop="description" content="Creamos sitios web a medida de los clientes y gustos" />
+  <meta itemprop="sku" content="0446310786" />
+  <meta itemprop="mpn" content="925872" />
+  <img itemprop="image" src="https://example.com/photos/1x1/catcher-in-the-rye-book-cover.jpg" alt="Catcher in the Rye" />
+  <span itemprop="name">Desarrollo web y diseño</span>
+  <div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+    <span itemprop="streetAddress">Avenida de la Aviación 123</span>
+    <span itemprop="addressLocality">Lima</span>
+    <span itemprop="addressCountry">Perú</span>
+    <span itemprop="postalCode">15073</span>
+  </div>
+
+  <div itemprop="review" itemscope itemtype="https://schema.org/Review">
+    <div itemprop="reviewRating" itemscope itemtype="https://schema.org/Rating">
+      <span itemprop="ratingValue">4</span>
+      <span itemprop="bestRating" style="display: none;">5</span>
+    </div>
+    <div itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <span itemprop="name">Juan Pérez</span>
+    </div>
+    <meta itemprop="datePublished" content="2006-05-04" />4 May 2006
+    <p itemprop="reviewBody">I really enjoyed this book. It captures the essential challenge people face as they try make sense of their lives and grow to adulthood.</p>
+  </div>
+
+  <div itemprop="review" itemscope itemtype="https://schema.org/Review">
+    <div itemprop="reviewRating" itemscope itemtype="https://schema.org/Rating">
+      <span itemprop="ratingValue">4</span>
+      <span itemprop="bestRating" style="display: none;">5</span>
+    </div>
+    <div itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <span itemprop="name">Bedon cabello</span>
+    </div>
+    <meta itemprop="datePublished" content="2006-05-04" />4 May 2006
+    <p itemprop="reviewBody">I really enjoyed this book.</p>
+  </div>
+
+  <div itemprop="review" itemscope itemtype="https://schema.org/Review">
+    <div itemprop="reviewRating" itemscope itemtype="https://schema.org/Rating">
+      <span itemprop="ratingValue">5</span>
+      <span itemprop="bestRating" style="display: none;">5</span>
+    </div>
+    <div itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <span itemprop="name">Juan Pérez</span>
+    </div>
+    <meta itemprop="datePublished" content="2006-05-04" />4 May 2006
+    <p itemprop="reviewBody">I really enjoyed this book. It captures the essential challenge people face as they try make sense of their lives and grow to adulthood.</p>
+  </div>
+
+  <div itemprop="aggregateRating" itemtype="https://schema.org/AggregateRating" itemscope>
+    <meta itemprop="reviewCount" content="89" />
+    <meta itemprop="ratingValue" content="4.4">4,4</meta> 
+  </div>
+</div> -->
 <div class="comentario textFlow" itemscope itemtype="http://schema.org/Review">
-  <img class="comentario__img" src={image} alt={title} itemprop="image" />
-  <h4 class="comentario__name" itemprop="name">{title}</h4>
+  <img class="comentario__img" src={image} alt={author} itemprop="image" />
+  <h4 class="comentario__name" itemprop="author">{author}</h4>
   <small class="comentario__job" itemprop="jobTitle">{job}</small>
   <p class="comentario__description" itemprop="reviewBody">{comment}</p>
 
-  <div class="comentario__rating" class="estrellas">
-    <button>
-      {Array.from({ length: 5 }, () => <Icon name="start" size={20} />)}
-    </button>
+  <div class="comentario__rating" itemscope itemtype="http://schema.org/Rating">
+    <span itemprop="ratingValue" style="display: none;">{star}</span>
+    <span itemprop="bestRating" style="display: none;">5</span>
+    <span>
+      {Array.from({ length: 5 }, (_, index) => <Icon name="start" class:list={['comentario__icon', { active: (star ?? 0) >= index + 1 }]} size={20} />)}
+    </span>
   </div>
 </div>
-
 <style lang="scss">
   .comentario {
     background-color: var(--color-blue-900);
@@ -56,19 +111,19 @@ const { comment, image, job, title, star } = Astro.props.data;
       top: 1rem;
       right: 1rem;
       position: absolute;
-
-      > button {
-        > svg:hover {
-          color: yellow;
-        }
-        > svg:has(~ :hover) {
-          color: yellow;
-        }
-      }
+      margin-block-start: 0;
     }
 
     &__description {
       font-size: var(--fs-small);
+    }
+
+    &__icon {
+      color: white;
+
+      &.active {
+        color: yellow;
+      }
     }
   }
 </style>

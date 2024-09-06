@@ -1,0 +1,91 @@
+---
+import SectionPage from '@/components/SectionPage.astro';
+import Wrapper from '@/components/Wrapper/Wrapper.astro';
+---
+
+<SectionPage style="color: white">
+  <Wrapper>
+    <div class="counters-container">
+      <p>
+        <span class="counter" data-target="1000">0</span>
+        Alumnos
+      </p>
+      <p>
+        <span class="counter" data-target="20">0</span>
+        Cursos
+      </p>
+      <p>
+        <span class="counter" data-target="15">0</span>
+        Docentes
+      </p>
+    </div>
+  </Wrapper>
+</SectionPage>
+
+<style lang="scss">
+  .counters-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+
+    > p {
+      text-align: center;
+      font-variant-numeric: tabular-nums;
+    }
+  }
+
+  .counter {
+    display: block;
+    font-size: var(--fs-title1);
+  }
+</style>
+
+<script>
+  // Definir IntersectionObserver globalmente
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const counter = entry.target as HTMLElement;
+        startCounter(counter, 750);
+        observer.unobserve(counter); // Deja de observar después de que el contador empieza
+      }
+    });
+  });
+
+  const startCounter = (counter: HTMLElement, duration: number = 2500): void => {
+    const target = +counter.getAttribute('data-target')!;
+    let count = 0;
+    const startTime = performance.now();
+
+    const updateCounter = (timestamp: number) => {
+      const elapsedTime = timestamp - startTime;
+      const progress = Math.min(elapsedTime / duration, 1);
+
+      count = Math.floor(progress * target);
+      counter.innerText = numberWithCommas(count);
+
+      if (progress < 1) {
+        requestAnimationFrame(updateCounter);
+      } else {
+        counter.innerText = numberWithCommas(target); // Asegurarse de que el valor final sea exacto
+      }
+    };
+
+    requestAnimationFrame(updateCounter);
+  };
+
+  // Función para formatear números con comas
+  const numberWithCommas = (x: number): string => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  };
+
+  const counterAnimationHandler = (): void => {
+    const counters = document.querySelectorAll<HTMLElement>('.counter');
+    counters.forEach((counter) => {
+      observer.observe(counter); // Observa cada contador
+    });
+  };
+
+  // Iniciar la función de animación
+  counterAnimationHandler();
+</script>
