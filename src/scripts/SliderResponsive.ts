@@ -24,6 +24,7 @@ export class SliderResponsive {
   private autoplayEnabled: boolean;
   private autoplayInterval: NodeJS.Timeout | null = null;
   private selectorSliderItem: string = null;
+  private autoplayRequestId: number | null = null;
 
   constructor({ slider, autoPlayOptions, sliderItem = '.slider__item' }: Props) {
     this.slider = document.querySelector<HTMLElement>(slider);
@@ -381,13 +382,29 @@ export class SliderResponsive {
     };
   }
 
-  // Función para iniciar el autoplay con setInterval
   private startAutoplay = (cb: () => void, interval: number = 4000): (() => void) => {
-    if (this.autoplayInterval !== null) {
+    if (this.autoplayRequestId !== null) {
       return this.stopAutoplay;
     }
 
-    this.autoplayInterval = setInterval(cb, interval);
+    let lastTime = 0;
+
+    const loop = (currentTime: number) => {
+      if (lastTime === 0) {
+        lastTime = currentTime;
+      }
+
+      const elapsed = currentTime - lastTime;
+
+      if (elapsed >= interval) {
+        cb();
+        lastTime = currentTime;
+      }
+
+      this.autoplayRequestId = requestAnimationFrame(loop);
+    };
+
+    this.autoplayRequestId = requestAnimationFrame(loop);
 
     // Devuelve una función para detener el autoplay
     return this.stopAutoplay;
@@ -395,9 +412,9 @@ export class SliderResponsive {
 
   // Método para detener el autoplay
   private stopAutoplay = (): void => {
-    if (this.autoplayInterval !== null) {
-      clearInterval(this.autoplayInterval);
-      this.autoplayInterval = null;
+    if (this.autoplayRequestId !== null) {
+      cancelAnimationFrame(this.autoplayRequestId);
+      this.autoplayRequestId = null;
     }
   };
 

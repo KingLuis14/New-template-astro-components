@@ -1,10 +1,12 @@
 ---
 import SectionPage from '@/components/SectionPage.astro';
+import Typographic from '@/components/Typographic.astro';
 import Wrapper from '@/components/Wrapper/Wrapper.astro';
 ---
 
 <SectionPage style="color: white">
   <Wrapper>
+    <Typographic as="h2" size="sectionTitle" align="center" theme="theme2">Nuestros Números</Typographic>
     <div class="counters-container">
       <p>
         <span class="counter" data-target="1000">0</span>
@@ -18,19 +20,59 @@ import Wrapper from '@/components/Wrapper/Wrapper.astro';
         <span class="counter" data-target="15">0</span>
         Docentes
       </p>
+      <p>
+        <span class="counter" data-target="50">0</span>
+        Gatos
+      </p>
+      <p>
+        <span class="counter" data-target="7">0</span>
+        Perros
+      </p>
     </div>
   </Wrapper>
 </SectionPage>
 
 <style lang="scss">
   .counters-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    display: flex;
+    // grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
 
     > p {
+      flex: 0 0 clamp(150px, 40%, 250px);
       text-align: center;
       font-variant-numeric: tabular-nums;
+      background-color: #19258f50;
+      padding: 1rem;
+      border-radius: 0.6rem;
+      position: relative;
+      overflow: hidden;
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        transform-origin: center;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(255, 0, 0, 0) 100%);
+        animation: border 5s infinite ease-in-out;
+      }
+
+      @keyframes border {
+        0% {
+          transform: scaleX(0);
+        }
+        50% {
+          transform: scaleX(0.6);
+        }
+        100% {
+          transform: scaleX(0);
+        }
+      }
     }
   }
 
@@ -41,13 +83,12 @@ import Wrapper from '@/components/Wrapper/Wrapper.astro';
 </style>
 
 <script>
-  // Definir IntersectionObserver globalmente
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
         const counter = entry.target as HTMLElement;
         startCounter(counter, 750);
-        observer.unobserve(counter); // Deja de observar después de que el contador empieza
+        observer.unobserve(counter);
       }
     });
   });
@@ -79,13 +120,13 @@ import Wrapper from '@/components/Wrapper/Wrapper.astro';
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   };
 
-  const counterAnimationHandler = (): void => {
+  const counterAnimationObserver = (): void => {
     const counters = document.querySelectorAll<HTMLElement>('.counter');
     counters.forEach((counter) => {
-      observer.observe(counter); // Observa cada contador
+      observer.observe(counter);
     });
   };
 
   // Iniciar la función de animación
-  counterAnimationHandler();
+  counterAnimationObserver();
 </script>
