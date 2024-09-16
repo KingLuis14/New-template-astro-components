@@ -16,23 +16,222 @@ import SliderResponsiveV2 from '@/sections/SliderResponsiveV2.astro';
 import SliderResponsiveBanner from '@/sections/SliderResponsiveBanner.astro';
 import Comentarios from '@/sections/Comentarios.astro';
 import DateNumbers from '@/sections/DateNumbers.astro';
+import TabCodepen, { type Datatabs } from '@/components/TabCodepen.astro';
+import CardBlog from '@/components/CardBlog/CardBlog.astro';
+import CardPricing from '@/components/CardPricing.astro';
+
+const tabsData: Datatabs[] = [
+  {
+    tab: 'Html y Css',
+    code: `label {
+        padding: 0.8em 1.5em;
+        border-bottom: 1px solid transparent;
+      }`,
+    gruop: 'cardBlog',
+    lang: 'css',
+  },
+  {
+    tab: 'Astro',
+    code: `
+  ---
+  import Typographic from '../Typographic.astro';
+
+  export interface Props {
+    image: string;
+    title: string;
+    autor: string;
+    date: string;
+  }
+
+  const { image, title, autor, date } = Astro.props;
+  ---
+
+  <article>
+    <a href="#" class="cardBlog">
+      <img class="cardBlog__img" src="\${image}" alt="\${title}" />
+      <div class="cardBlog__content" style="--img-cardBlog: url(\${image})">
+        <Typographic as="h3" size="normal" theme="theme2">\${title}</Typographic>
+        <Typographic as="p" size="small" theme="theme3" weigth="400">
+          <strong class="fw-500">\${autor} <time>\${date}</time> </strong>
+        </Typographic>
+      </div>
+    </a>
+  </article>
+
+  <style lang="scss">
+    .cardBlog {
+      display: grid;
+      border-radius: 0.6rem;
+      overflow: hidden;
+      position: relative;
+
+      > *,
+      &::before {
+        grid-column: 1/ -1;
+        grid-row: 1 / -1;
+      }
+
+      &__img {
+        aspect-ratio: 3/2;
+        height: 100%;
+        transition: transform 0.5s;
+        transform: scale(1.02);
+
+        &:hover {
+          transform: scale(1.3);
+        }
+      }
+
+      &__content {
+        display: grid;
+        pointer-events: none;
+        z-index: 20;
+        align-self: self-end;
+        line-height: normal;
+        gap: 0.5rem;
+        padding: 1rem;
+      }
+
+      &::before {
+        content: '';
+        pointer-events: none;
+        background-image: linear-gradient(
+          to bottom,
+          hsla(0, 0%, 0%, 0) 0%,
+          hsla(0, 0%, 0%, 0.01) 8.1%,
+          hsla(0, 0%, 0%, 0.039) 15.5%,
+          hsla(0, 0%, 0%, 0.083) 22.5%,
+          hsla(0, 0%, 0%, 0.14) 29%,
+          hsla(0, 0%, 0%, 0.207) 35.3%,
+          hsla(0, 0%, 0%, 0.282) 41.2%,
+          hsla(0, 0%, 0%, 0.36) 47.1%,
+          hsla(0, 0%, 0%, 0.44) 52.9%,
+          hsla(0, 0%, 0%, 0.518) 58.8%,
+          hsla(0, 0%, 0%, 0.593) 64.7%,
+          hsla(0, 0%, 0%, 0.66) 71%,
+          hsla(0, 0%, 0%, 0.717) 77.5%,
+          hsla(0, 0%, 0%, 0.761) 84.5%,
+          hsla(0, 0%, 0%, 0.79) 91.9%,
+          hsla(0, 0%, 0%, 0.8) 100%
+        );
+        z-index: 10;
+      }
+    }
+  </style>
+`,
+    gruop: 'cardBlog',
+    lang: 'astro',
+  },
+];
+const tabsData2: Datatabs[] = [
+  {
+    tab: 'Html y Css',
+    code: `label {
+        padding: 0.8em 1.5em;
+        border-bottom: 1px solid transparent;
+      }`,
+    gruop: 'button',
+    lang: 'css',
+  },
+];
 ---
 
-<MainLayout titulo="xd" descripction="e">
+<MainLayout titulo="Componentes astro vanilla" descripction="Biblioteca de componenestes vanilla hmtl css + sass y astro">
   <main class="wrapper">
-    <SliderResponsiveBanner />
+    <br />
+    <Wrapper>
+      <TabCodepen data={tabsData2}>
+        <div style="background-color: white; padding: 1rem;">
+          <Wrapper classes="cardPricing-containerQuery">
+            <div class="cardPricing-wrapper">
+              <CardPricing planTitle="Basic" price={10} />
+              <CardPricing planTitle="Bussines" price={20} theme="dark" />
+              <CardPricing planTitle="Enterprise" price={40} />
+            </div>
+          </Wrapper>
+        </div>
+      </TabCodepen>
+      <br />
+      <br />
+      <TabCodepen data={tabsData}>
+        <Wrapper classes="cardBlog">
+          <CardBlog
+            image="https://edteam-media.s3.amazonaws.com/blogs/original/bd100561-08f5-4685-8426-7afcd4b4061d.jpg"
+            title="La historia de Javascript"
+            autor="Gato modesto"
+            date="14-08-2023"
+          />
+        </Wrapper>
+      </TabCodepen>
+      <br />
+      <br />
+      <TabCodepen data={tabsData2}>
+        <Wrapper>
+          <Button as="a">Enlace</Button>
+        </Wrapper>
+      </TabCodepen>
+
+      <br />
+      <br />
+    </Wrapper>
+
+    <!-- <SliderResponsiveBanner />
     <SliderResponsiveV2 />
     <SliderResponsive />
     <Comentarios />
     <Botones />
-    <DateNumbers />
+    <DateNumbers /> -->
   </main>
 </MainLayout>
+
+<style lang="scss">
+  .cardBlog {
+    display: grid;
+    place-items: center;
+    place-content: center;
+    grid-template-columns: minmax(320px, 50%);
+    height: 100%;
+  }
+
+  .cardPricing-containerQuery {
+    container: cardPricing/ inline-size;
+  }
+
+  .cardPricing-wrapper {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    
+
+    @container cardPricing (width >= 700px) {
+      
+      > :global(.cardPricing) {
+        grid-column: span 2;
+      }
+      > :global(.cardPricing:last-child) {
+        grid-column: 2/4;
+      }
+
+    }
+
+
+    @container cardPricing (width >= 960px) {
+      grid-template-columns: repeat(6, 1fr);
+      > :global(.cardPricing) {
+        grid-column: span 2;
+      }
+      > :global(.cardPricing:last-child) {
+        grid-column: span 2;
+      }
+    }
+
+  }
+</style>
 
 <script>
   import { SliderResponsive } from '@/scripts/SliderResponsive.ts';
 
-  new SliderResponsive({ slider: '.slider.slider--v3', autoPlayOptions: { time: 8000 } });
-  new SliderResponsive({ slider: '.slider.slider--v2', autoPlayOptions: { time: 5000 } });
-  new SliderResponsive({ slider: '.slider.slider--v1' });
+  // new SliderResponsive({ slider: '.slider.slider--v3', autoPlayOptions: { time: 8000 } });
+  // new SliderResponsive({ slider: '.slider.slider--v2', autoPlayOptions: { time: 5000 } });
+  // new SliderResponsive({ slider: '.slider.slider--v1' });
 </script>

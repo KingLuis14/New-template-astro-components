@@ -39,7 +39,7 @@
   --fs-smallx: clamp(0.651rem, 0.562rem + 0.4452vw, 0.8681rem);
 
   // wrapper
-  --wrapper-width: min(90%, 1000px);
+  --wrapper-width: min(90%, 1200px);
   --wrapper-margin: calc((100% - var(--wrapper-width)) / 2);
   --padding-section: clamp(3.5rem, 5vw + 2.25rem, 6rem);
 }

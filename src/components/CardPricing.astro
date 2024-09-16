@@ -1,0 +1,215 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  theme?: string;
+  planTitle : string;
+  price: number;
+}
+
+const {theme = 'light', planTitle , price} = Astro.props;
+---
+  <div class=`cardPricing cardPricing--${theme}`>
+    <div class="cardPricing__plan" data-oferta={theme == 'dark' && ''} >
+      <h3 class="cardPricing__planTitle">{planTitle} plan</h3>
+  
+      <div class="cardPricing__money">
+        <h4 class="cardPricing__moneyNumber">${price}</h4>
+        <div class="cardPricing__moneyDetails">
+          <small>por user</small>
+          <small>por month</small>
+        </div>
+      </div>
+  
+      <p class="cardPricing__planDescription">Lorem ipsum dolor sit 20 users.</p>
+      <a href="#" class="button button--accent">Get started</a>
+      <a href="#" class="button button--default">Chat to sales</a>
+    </div>
+    <div class="cardPricing__features">
+      <h4>Features</h4>
+      <p class="cardPricing__featuresDescription">Lorem ipsum dolor sit...</p>
+      <ul class="cardPricing__featuresList">
+        
+        <li>
+          <Icon name="ChekIcon" />
+          <span>Lorem ipsum dolor sit amet.</span>
+        </li>
+        <li>
+          <Icon name="ChekIcon" />
+          <span>Lorem ipsum dolor sit amet.</span>
+        </li>
+        <li>
+          <Icon name="ChekIcon" />
+          <span>Lorem ipsum dolor sit amet.</span>
+        </li>
+        <li>
+          <Icon name="ChekIcon" />
+          <span>Lorem ipsum dolor sit amet.</span>
+        </li>
+        <li>
+          <Icon name="ChekIcon" />
+          <span>Lorem ipsum dolor sit amet.</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+
+<style lang="scss">
+  
+  .cardPricing {
+    background-color: var(--cardPricing-bg-color);
+    color: var(--cardPricing-text-color);
+    border-radius: 0.8rem;
+    box-shadow: 0 0 5px rgba(0, 0, 0, .20);
+    grid-column: 1 / -1;
+    // max-width: 330px;
+
+    &__plan {
+      border-bottom: 1px solid var(--cardPricing-color-divisor-line);
+      padding: 1.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      position: relative;
+
+      &[data-oferta]{
+        &::before {
+        content: 'Popular';
+        position: absolute;
+        top: 1.2rem;
+        right: 1.2rem;
+        background-color: var(--cardPricing-text-color-brand);
+        padding: 0.4em 1em;
+        border-radius: 100vh;
+        font-size: 0.8em;
+        color: var(--cardPricing-bg-color);
+        font-weight: 600;
+      }
+      }
+    }
+    &__planTitle {
+      color: var(--cardPricing-color-plan-title);
+    }
+
+    &__planDescription {
+      font-size: clamp(0.9375rem, 0.8958rem + 0.2083vw, 1rem);
+      margin-bottom: 0.7rem;
+    }
+
+    &__money {
+      display: flex;
+      // background-color: crimson;
+      gap: 0.6rem;
+      align-items: center;
+    }
+
+    &__moneyNumber {
+      font-size: 3em;
+      line-height: normal;
+      color: var(--cardPricing-color-money-number);
+      letter-spacing: -1px;
+    }
+
+    &__moneyDetails {
+      display: flex;
+      flex-direction: column;
+      line-height: normal;
+      gap: 0.2rem;
+
+      > * {
+        font-size: clamp(0.7813rem, 0.7465rem + 0.1736vw, 0.8333rem);
+      }
+    }
+
+    &__features {
+      padding: 1.2rem;
+    }
+
+    &__featuresDescription {
+      font-size: clamp(0.9375rem, 0.8958rem + 0.2083vw, 1rem);
+    }
+
+    &__featuresList {
+      margin-top: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      > li {
+        display: flex;
+        gap: 0.4rem;
+        padding-block: 0.1em;
+
+        > svg {
+          font-size: 1.7em;
+          color: var(--cardPricing-text-color-brand);
+          flex-shrink: 0;
+        }
+
+        > span {
+          line-height: normal;
+          font-size: clamp(0.9375rem, 0.8958rem + 0.2083vw, 1rem);
+          // align-self: center;
+        }
+      }
+    }
+
+    &--light {
+      --cardPricing-text-color: #101727;
+      --cardPricing-text-color-brand: #adff14;
+      --cardPricing-bg-color: white;
+      --cardPricing-color-plan-title: var(--cardPricing-text-color);
+      --cardPricing-color-money-number: var(--cardPricing-text-color);
+      --cardPricing-color-divisor-line: rgba(0, 0, 0, .20);
+
+      .button--accent {
+        --button-text-color: white;
+        --button-bg-color: var(--cardPricing-text-color);
+        --button-text-color-hover: var(--cardPricing-bg-color);
+        --button-bg-color-hover: #293145;
+      }
+
+      .button--default {
+        box-shadow: 0 0 5px rgba(0, 0, 0, .20);
+      }
+    }
+
+    &--dark {
+      --cardPricing-text-color-brand: #adff14;
+      --cardPricing-bg-color: #101727;
+      --cardPricing-text-color: rgb(203, 203, 203);
+      --cardPricing-color-plan-title: var(--cardPricing-text-color-brand);
+      --cardPricing-color-divisor-line: rgba(188, 188, 188, 0.25);
+
+      .button--accent {
+        --button-text-color: var(--cardPricing-bg-color);
+      --button-bg-color: var(--cardPricing-text-color-brand);
+      --button-text-color-hover: var(--cardPricing-bg-color);
+      --button-bg-color-hover: #6eb800;
+      }
+    }
+
+    
+
+    
+    
+
+    
+  }
+
+  .button {
+    background-color: var(--button-bg-color, #fff);
+    padding: 0.5em 1.5em;
+    border-radius: 0.25em;
+    color: var(--button-text-color, #000);
+    font-weight: 500;
+    text-align: center;
+    
+
+    &:is(:hover, :focus) {
+      background-color: var(--button-bg-color-hover, #000);
+      color: var(--button-text-color-hover, #fff);
+    }
+  }
+</style>

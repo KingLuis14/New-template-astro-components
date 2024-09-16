@@ -1,0 +1,152 @@
+---
+import { Code } from 'astro:components';
+
+
+
+
+export interface Datatabs {
+  tab: string;
+  code: string;
+  gruop: string;
+  lang: any;
+}
+
+interface Props {
+  data : Datatabs[]
+}
+
+const {data} = Astro.props;
+
+
+---
+
+<div class="tab">
+  <nav class="tab__controls">
+    {
+      data.slice(0,1).map( ({gruop}, index) => (
+      <input type="radio"
+      class="tab__control"
+        id={`${gruop}${index+1}`} 
+        data-id={`${gruop}${index+1}`} 
+        name={gruop}
+        checked
+        />
+      <label for={`${gruop}${index+1}`}>Preview</label>
+      ))
+    }
+    {
+      data.map( ({tab, gruop}, index) => (
+      <input type="radio"
+      class="tab__control"
+        id={`${gruop}${index+2}`} 
+        data-id={`${gruop}${index+2}`} 
+        name={gruop}
+        />
+      <label for={`${gruop}${index+2}`}>{tab}</label>
+      ))
+    }
+  </nav>
+  <div class="tab__container">
+    
+      {
+        data.slice(0,1).map(({gruop}, index)=> (
+        <div 
+          class='tab__item active'
+          data-tabId={`${gruop}${index+1}`}
+          style="height: 100%"  
+          data-preview
+        >
+          <slot />
+        </div>
+        ))
+      }
+    
+    
+    {
+      data.map(({code, lang, gruop}, index)=> (
+      <Code 
+        code={code} 
+        class='tab__item'
+        lang={lang}
+        data-tabId={`${gruop}${index+2}`} 
+        theme={'tokyo-night'}
+        style="height: 100%" 
+      />
+    ))
+    }
+  </div>
+</div>
+
+<style lang="scss">
+  .tab {
+    display: grid;
+    border-radius: 0.5rem;
+    background-color: #1a1b26;
+    overflow: hidden;
+
+    &__controls {
+      color: white;
+      display: flex;
+      border-bottom: 1px solid #303234;
+
+      > input[type='radio'] {
+        display: none;
+      }
+
+      > input:checked + label {
+        border-color: #ffffff;
+      }
+      > input:not(:checked) + label {
+        border-color: transparent;
+        color: gray;
+      }
+
+      > label {
+        padding: 0.8em 1.5em;
+        border-bottom: 1px solid transparent;
+      }
+    }
+
+    &__container{
+      height: 80vh;
+      overflow: auto;
+
+      > pre {
+        padding: 1em;
+      }
+    }
+
+    &__item {
+      display: none;
+
+      &[data-preview]{
+       
+      }
+
+      &.active {
+        display: block;
+      }
+    }
+  }
+</style>
+
+<script>
+  import { addCustomEventListener } from '@/utils/CustomEventListener';
+
+  addCustomEventListener('click', '.tab__control', (e)=> {
+
+    const $Element = e.target as HTMLInputElement;
+
+    const $TabContainer = $Element.parentElement.nextElementSibling as HTMLElement;
+
+    const $TabItemOldActive = $TabContainer?.querySelector<HTMLElement>(`.tab__item.active`);
+    const $TabItemNewActive = $TabContainer?.querySelector<HTMLElement>(`.tab__item[data-tabId=${$Element.getAttribute('data-id')}]`);
+
+    $TabItemOldActive?.classList.remove("active");
+    $TabItemNewActive?.classList.add('active');
+    console.log($Element.getAttribute('data-id'));
+
+  } );
+
+
+</script>
