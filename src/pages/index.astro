@@ -19,6 +19,10 @@ import DateNumbers from '@/sections/DateNumbers.astro';
 import TabCodepen, { type Datatabs } from '@/components/TabCodepen.astro';
 import CardBlog from '@/components/CardBlog/CardBlog.astro';
 import CardPricing from '@/components/CardPricing.astro';
+import { wordPressFecth } from '@/utils/WordPressFetch';
+import Beneficie from '@/sections/Beneficie.astro';
+import Cta from '@/sections/Cta.astro';
+import Courses from '@/sections/Courses.astro';
 
 const tabsData: Datatabs[] = [
   {
@@ -134,12 +138,44 @@ const tabsData2: Datatabs[] = [
     lang: 'css',
   },
 ];
+
+
+// const dataWordPress = await wordPressFecth({
+//   query: `
+//   query AllPosts {
+//   posts {
+//     nodes {
+//       title
+//       slug
+//       featuredImage {
+//         node {
+//           altText
+//           mediaItemUrl
+//         }
+//       }
+//       content(format: RENDERED)
+//       author {
+//         node {
+//           name
+//         }
+//       }
+//     }
+//   }
+// }`
+// });
+
+// console.log(dataWordPress.posts.nodes);
+
+
 ---
 
 <MainLayout titulo="Componentes astro vanilla" descripction="Biblioteca de componenestes vanilla hmtl css + sass y astro">
   <main class="wrapper">
-    <br />
+    <Courses />
+    <Beneficie />
+    <Cta />
     <Wrapper>
+
       <TabCodepen data={tabsData2}>
         <div style="background-color: white; padding: 1rem;">
           <Wrapper classes="cardPricing-containerQuery">

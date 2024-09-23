@@ -31,10 +31,19 @@ const { titulo, descripction, imagen } = Astro.props;
       fetchpriority="high"
       rel="preload"
       as="font"
-      href="/fonts/inter-latin-variable-full-normal.woff2"
+      href="/fonts/RobotoCondensed-Regular.woff2"
       type="font/woff2"
       crossorigin="anonymous"
     />
+    <link
+      fetchpriority="high"
+      rel="preload"
+      as="font"
+      href="/fonts/BebasNeue-Regular.woff2"
+      type="font/woff2"
+      crossorigin="anonymous"
+    />
+
     <slot name="preload" />
 
     <!-- Open Graph / Facebook -->

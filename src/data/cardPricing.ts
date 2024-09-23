@@ -1,0 +1,106 @@
+import type { Datatabs } from "@/components/TabCodepen.astro";
+
+
+export const tabsData: Datatabs[] = [
+    {
+      tab: 'Html y Css',
+      code: `label {
+          padding: 0.8em 1.5em;
+          border-bottom: 1px solid transparent;
+        }`,
+      gruop: 'cardBlog',
+      lang: 'css',
+    },
+    {
+      tab: 'Astro',
+      code: `
+    ---
+    import Typographic from '../Typographic.astro';
+  
+    export interface Props {
+      image: string;
+      title: string;
+      autor: string;
+      date: string;
+    }
+  
+    const { image, title, autor, date } = Astro.props;
+    ---
+  
+    <article>
+      <a href="#" class="cardBlog">
+        <img class="cardBlog__img" src="\${image}" alt="\${title}" />
+        <div class="cardBlog__content" style="--img-cardBlog: url(\${image})">
+          <Typographic as="h3" size="normal" theme="theme2">\${title}</Typographic>
+          <Typographic as="p" size="small" theme="theme3" weigth="400">
+            <strong class="fw-500">\${autor} <time>\${date}</time> </strong>
+          </Typographic>
+        </div>
+      </a>
+    </article>
+  
+    <style lang="scss">
+      .cardBlog {
+        display: grid;
+        border-radius: 0.6rem;
+        overflow: hidden;
+        position: relative;
+  
+        > *,
+        &::before {
+          grid-column: 1/ -1;
+          grid-row: 1 / -1;
+        }
+  
+        &__img {
+          aspect-ratio: 3/2;
+          height: 100%;
+          transition: transform 0.5s;
+          transform: scale(1.02);
+  
+          &:hover {
+            transform: scale(1.3);
+          }
+        }
+  
+        &__content {
+          display: grid;
+          pointer-events: none;
+          z-index: 20;
+          align-self: self-end;
+          line-height: normal;
+          gap: 0.5rem;
+          padding: 1rem;
+        }
+  
+        &::before {
+          content: '';
+          pointer-events: none;
+          background-image: linear-gradient(
+            to bottom,
+            hsla(0, 0%, 0%, 0) 0%,
+            hsla(0, 0%, 0%, 0.01) 8.1%,
+            hsla(0, 0%, 0%, 0.039) 15.5%,
+            hsla(0, 0%, 0%, 0.083) 22.5%,
+            hsla(0, 0%, 0%, 0.14) 29%,
+            hsla(0, 0%, 0%, 0.207) 35.3%,
+            hsla(0, 0%, 0%, 0.282) 41.2%,
+            hsla(0, 0%, 0%, 0.36) 47.1%,
+            hsla(0, 0%, 0%, 0.44) 52.9%,
+            hsla(0, 0%, 0%, 0.518) 58.8%,
+            hsla(0, 0%, 0%, 0.593) 64.7%,
+            hsla(0, 0%, 0%, 0.66) 71%,
+            hsla(0, 0%, 0%, 0.717) 77.5%,
+            hsla(0, 0%, 0%, 0.761) 84.5%,
+            hsla(0, 0%, 0%, 0.79) 91.9%,
+            hsla(0, 0%, 0%, 0.8) 100%
+          );
+          z-index: 10;
+        }
+      }
+    </style>
+  `,
+      gruop: 'cardBlog',
+      lang: 'astro',
+    },
+  ];

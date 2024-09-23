@@ -1,0 +1,55 @@
+---
+import CardBeneficie from '@/components/CardBeneficie.astro';
+import SectionPage from '@/components/SectionPage.astro';
+import Wrapper from '@/components/Wrapper/Wrapper.astro';
+---
+
+<SectionPage>
+  <Wrapper classes="beneficie" >
+      <div class="beneficie__content textFlow">
+        <small class="font-bebas-neue">All you need</small>
+        <h2 class="beneficie__title font-bebas-neue">Our services will make your product successful</h2>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure dolore suscipit ipsam sed corrupti dicta?</p>
+      </div>
+      <div class="beneficie__cardContainer">
+        <CardBeneficie text="Certificacion Progresiva" />
+        <CardBeneficie text="Clases en Vivo" />
+        <CardBeneficie text="Materiales por Curso" />
+        <CardBeneficie text="Plataforma Virtual" />
+      </div>
+  </Wrapper>
+</SectionPage>
+
+<style lang="scss">
+  .beneficie {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2rem;
+    color: white;
+
+    @media (width >= 1200px) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    &__title{
+      font-size: clamp(1.944rem, 1.6782rem + 1.3292vw, 2.592rem);
+    }
+
+    &__content {
+      align-self: center;
+      max-width: 70ch;
+      --_space: 1rem;
+    }
+
+    &__cardContainer {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: clamp(1rem, 2vw + 0.5rem, 2rem);
+
+      & :global(> :nth-child(odd)) {
+        position: relative;
+        top: clamp(1rem, 2vw + 0.5rem, 2rem);
+      }
+    }
+  }
+</style>

@@ -1,0 +1,40 @@
+---
+import { Icon } from "astro-icon/components";
+
+interface Props {
+    text: string;
+}
+
+const {text} = Astro.props;
+
+---
+
+<div class="cardBeneficie">
+    <Icon name="ChekIcon" size={60} />
+    <p>{ text ? text : "Lorem ipsum dolor sit amet, consectetur adipiscing elit." }</p>
+</div>
+
+<style lang="scss">
+.cardBeneficie{
+    padding-block: clamp(2rem, 2vw + 1.5rem, 3rem);
+    padding-inline: clamp(1rem, 5vw, 2rem);
+    background-color: crimson;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    border-radius: .5rem;
+    min-height: 250px;
+    justify-content: center;
+
+    > p {
+        // background-color: black;
+        max-width: 11ch;
+    }
+
+    &:hover{
+        background-color: white;
+        color: black;
+    }
+}
+
+</style>

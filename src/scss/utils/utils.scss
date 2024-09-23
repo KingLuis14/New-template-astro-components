@@ -46,3 +46,26 @@
 .fw-800{
     font-weight: 800;
 }
+
+
+.listIcon {
+    display: flex;
+    gap: 0.4rem;
+    padding-block: 0.1em;
+
+    > svg {
+      font-size: 1.7em;
+      flex-shrink: 0;
+    }
+
+    > span {
+      line-height: normal;
+      font-size: clamp(0.9375rem, 0.8958rem + 0.2083vw, 1rem);
+      align-self: center;
+    }
+  }
+
+.font-bebas-neue{
+    font-family: "Bebas-Neue";
+    font-weight: 400;
+}
