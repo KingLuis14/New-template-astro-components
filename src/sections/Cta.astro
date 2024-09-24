@@ -5,18 +5,34 @@ import Wrapper from '@/components/Wrapper/Wrapper.astro';
 ---
 
 <SectionPage>
-  <Wrapper classes="container">
-    <div>
-      <img class="container__img" src="https://integro.ancorathemes.com/wp-content/uploads/elementor/thumbs/img-6-copyright-qk4t0xx8xp2ymywwuyacahslqwlvzmj3pz6zlvo0dc.jpg" alt="img1" />
+  <Wrapper >
+    <div class="container">
+      <div>
+        <img class="container__img" src="https://integro.ancorathemes.com/wp-content/uploads/elementor/thumbs/img-6-copyright-qk4t0xx8xp2ymywwuyacahslqwlvzmj3pz6zlvo0dc.jpg" alt="img1" />
+      </div>
+      <div class="container__content">
+        <small class="font-bebas-neue">Creative team</small>
+        <h2 class="container__title font-bebas-neue">We are the digital generation, ready for crazy ideas and experiments</h2>
+        <footer>
+          <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+          <Button as="a" size='content' >Hola xd</Button>
+        </footer>
+       
+      </div>
     </div>
-    <div class="container__content">
-      <small class="font-bebas-neue">Creative team</small>
-      <h2 class="container__title font-bebas-neue">We are the digital generation, ready for crazy ideas and experiments</h2>
-      <footer>
-        <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
-        <Button as="a" size='content' >Hola xd</Button>
-      </footer>
-     
+    <div class="counters-container font-bebas-neue">
+      <div class="counter" >
+        <h3 class="counter__title">Alumnos</h3>
+        <p > <span class="counter__number" data-target="1000">+</span> <span>+</span> </p>
+      </div>
+      <div class="counter" >
+        <h3 class="counter__title">Cursos</h3>
+        <p ><span class="counter__number" data-target="20">+</span> <span>+</span> </p>
+      </div>
+      <div class="counter" >
+        <h3 class="counter__title">Profesores</h3>
+        <p > <span class="counter__number" data-target="15">+</span> <span>+</span> </p>
+      </div>
     </div>
   </Wrapper>
 </SectionPage>
@@ -69,4 +85,94 @@ import Wrapper from '@/components/Wrapper/Wrapper.astro';
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
+
+  .counters-container {
+    margin-top: var(--padding-section);
+    display: flex;
+    color: white;
+    // grid-template-columns: repeat(3, 1fr);
+    // gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+
+   
+
+    
+  }
+
+  .counter {
+      flex: 1 0 clamp(150px, 40%, 250px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-variant-numeric: tabular-nums;
+      // background-color: #19258f50;
+      padding-block: 1.5rem;
+      
+      
+      &__title{
+        font-weight: 400;
+        line-height: normal;
+        font-size: clamp(0.9375rem, 0.8093rem + 0.641vw, 1.25rem);
+      }
+      
+
+      
+
+      > p {
+        font-size: clamp(2.7994rem, 2.4165rem + 1.9141vw, 3.7325rem);
+      line-height: normal;
+      }
+    }
 </style>
+
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const counter = entry.target as HTMLElement;
+        startCounter(counter, 750);
+        observer.unobserve(counter);
+      }
+    });
+  });
+
+  const startCounter = (counter: HTMLElement, duration: number = 2500): void => {
+    const target = +counter.getAttribute('data-target')!;
+    let count = 0;
+    const startTime = performance.now();
+
+    const updateCounter = (timestamp: number) => {
+      const elapsedTime = timestamp - startTime;
+      const progress = Math.min(elapsedTime / duration, 1);
+
+      count = Math.floor(progress * target);
+      counter.innerText = numberWithCommas(count);
+
+      if (progress < 1) {
+        requestAnimationFrame(updateCounter);
+      } else {
+        counter.innerText = numberWithCommas(target); // Asegurarse de que el valor final sea exacto
+      }
+    };
+
+    requestAnimationFrame(updateCounter);
+  };
+
+  // Función para formatear números con comas
+  const numberWithCommas = (x: number): string => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  };
+
+  const counterAnimationObserver = (): void => {
+    const counters = document.querySelectorAll<HTMLElement>('.counter__number');
+    counters.forEach((counter) => {
+      observer.observe(counter);
+    });
+  };
+
+  // Iniciar la función de animación
+  counterAnimationObserver();
+</script>

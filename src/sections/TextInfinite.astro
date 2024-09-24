@@ -1,0 +1,39 @@
+
+<section style={{overflowX: 'hidden'}}>
+        <div class="textInfinite">
+            <h2>Diseño de Páginas y Sitios Web</h2>
+            <h2>Diseño de Páginas y Sitios Web</h2>
+        </div>
+</section>
+
+
+<style lang="scss">
+
+    .textInfinite{
+        display: flex;
+        background-color: #142ae1;
+        gap: 4rem;
+        overflow-x: hidden;
+        align-items: center;
+        width: max-content;
+        animation: loopText 10s forwards linear infinite;
+        
+        > h2{
+            font-family: "Bebas-Neue";
+            color: white;
+            font-size: clamp(5rem, 11.0803vw + 1.6898rem, 10rem);
+            flex-shrink: 0;
+            text-transform: uppercase;
+            font-weight: 400;
+            line-height: 1.6;
+            letter-spacing: 2px;
+            pointer-events: none;
+        }
+
+        @keyframes loopText {
+            100%{
+                 transform: translate(calc(-50% - 2rem));
+            }
+        }
+    }
+</style>

@@ -23,6 +23,7 @@ import { wordPressFecth } from '@/utils/WordPressFetch';
 import Beneficie from '@/sections/Beneficie.astro';
 import Cta from '@/sections/Cta.astro';
 import Courses from '@/sections/Courses.astro';
+import TextInfinite from '@/sections/TextInfinite.astro';
 
 const tabsData: Datatabs[] = [
   {
@@ -171,10 +172,13 @@ const tabsData2: Datatabs[] = [
 
 <MainLayout titulo="Componentes astro vanilla" descripction="Biblioteca de componenestes vanilla hmtl css + sass y astro">
   <main class="wrapper">
+    <TextInfinite />
     <Courses />
     <Beneficie />
     <Cta />
-    <Wrapper>
+
+
+    <!-- <Wrapper>
 
       <TabCodepen data={tabsData2}>
         <div style="background-color: white; padding: 1rem;">
@@ -209,7 +213,7 @@ const tabsData2: Datatabs[] = [
 
       <br />
       <br />
-    </Wrapper>
+    </Wrapper> -->
 
     <!-- <SliderResponsiveBanner />
     <SliderResponsiveV2 />
